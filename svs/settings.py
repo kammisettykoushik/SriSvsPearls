@@ -26,7 +26,19 @@ SECRET_KEY = 'django-insecure-g#x$7o1e^l=3o44_61x=dy=q-n*o9%35^*@^43g4snl(1+cpvx
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*', 'https://srisvspearls.onrender.com/']
+ALLOWED_HOSTS = ['*', 'https://srisvspearls.onrender.com/', 'www.srisvspearls.onrender.com',]
+
+
+# settings.py
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://srisvspearls.onrender.com',
+    'http://srisvspearls.onrender.com',  # In case you're using HTTP (for local testing or development)
+]
+# settings.py
+
+CSRF_COOKIE_SECURE = True  # If using HTTPS
+SESSION_COOKIE_SECURE = True  # If using HTTPS
 
 # Application definition
 
