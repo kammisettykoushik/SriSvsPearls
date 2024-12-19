@@ -1,0 +1,91 @@
+{% block content %}
+<section class="custom-carousel-section">
+    <div class="container fluid">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-4">
+                <div class="custom-text" style="font-family: Georgia, 'Times New Roman', Times, serif;">
+                    <h1 style="color: #e0a165;"><span>Explore Stunning</span><br>SRI SVS Jewellery</h1>
+                    <p>
+                        Explore our curated collection of the best pieces, crafted with precision and passion.
+                        Find the perfect jewelry to adorn your style.
+                    </p>
+                </div>
+            </div>
+
+
+          <div class="col-md-6">
+    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="2000">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+
+        <div class="carousel-inner custom-carousel-inner">
+            <div class="carousel-item active">
+                <!-- <img src="https://t3.ftcdn.net/jpg/03/13/20/74/240_F_313207428_XH1VGlWhI9A1gpCMHv6frJNM035FGp3d.jpg" height="400px" class="d-block w-100" alt="..."> -->
+                <img src="../../static/img/necklasestone.jpeg"
+                style="object-fit: contain; width: 100%; height: 400px;"
+                 class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <!-- <img src="https://t3.ftcdn.net/jpg/05/01/68/14/240_F_501681453_OK98f9V62ma99VPoDJtY6YHFTVFMhvUU.jpg" height="400px" class="d-block w-100" alt="..."> -->
+                <img src="../../static/img/papidi.jpeg" 
+                height="400" 
+                class="d-block w-100"  
+                alt="Earrings with stone" 
+                style="object-fit: contain; width: 100%; height: 400px;">
+           
+            </div>
+            <div class="carousel-item">
+                <!-- <img src="https://t4.ftcdn.net/jpg/06/26/07/73/240_F_626077337_qp4YPqVTbf293w9BdZdNgFwOgqQUUJak.jpg" height="400px" class="d-block w-100" alt="..."> -->
+                <img src="../../static/img/bangles.jpeg" 
+                style="object-fit: contain; width: 100%; height: 400px;"
+                class="d-block w-100" alt="...">
+            </div>
+           
+        </div>
+
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</div>
+
+
+        
+        </div>
+    </div>
+</section>
+
+<script>
+    // Initialize the Bootstrap carousel with a 4-second interval (4000ms)
+    const carousel = document.querySelector('#carouselExampleIndicators');
+    const carouselInstance = new bootstrap.Carousel(carousel, {
+        interval: 2000, // Set interval to 4 seconds (4000ms) for auto-slide
+        ride: 'carousel', // Automatically cycle through the slides
+    });
+
+    // Add custom delay when clicking next or previous buttons (4-second delay)
+    const nextButton = carousel.querySelector('.carousel-control-next');
+    const prevButton = carousel.querySelector('.carousel-control-prev');
+
+    // Add event listeners for the next/prev buttons
+    nextButton.addEventListener('click', function() {
+        carouselInstance.pause(); // Pause the carousel when the user clicks next
+        setTimeout(() => carouselInstance.next(), 2000); // After 4 seconds, move to the next slide
+    });
+
+    prevButton.addEventListener('click', function() {
+        carouselInstance.pause(); // Pause the carousel when the user clicks previous
+        setTimeout(() => carouselInstance.prev(), 2000); // After 4 seconds, move to the previous slide
+    });
+</script>
+
+
+{% endblock %}

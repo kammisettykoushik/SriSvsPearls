@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-12 col-md-8 offset-md-2">
+
+                <h2 class="text-center"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGyCO91mL-I72BnfATM3SzjMMBMTjgKXt36g&s" style="width: 13% ; height: 6%" alt="SriSvsPearls Logo">Invoice for Order #{{ order.id }}</h2>
+
+                <div class="card mt-4">
+                    <div class="card-header">
+                        Shipping Information
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Name:</strong> {{ shipping_address.shipping_full_name }}</p>
+                        <p><strong>Email:</strong> {{ shipping_address.shipping_email }}</p>
+                        <p><strong>Address:</strong></p>
+                        <p>{{ shipping_address.shipping_address1 }}, {{ shipping_address.shipping_address2 }}</p>
+                        <p>{{ shipping_address.shipping_city }}, {{ shipping_address.shipping_state }} {{ shipping_address.shipping_zipcode }}</p>
+                        <p>{{ shipping_address.shipping_country }}</p>
+                    </div>
+                </div>
+
+                <div class="card mt-4">
+                    <div class="card-header">
+                        Order Items
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in order_items %}
+                                    <tr>
+                                        <td>{{ item.product.name }}</td>
+                                        <td>${{ item.price }}</td>
+                                        <td>{{ item.quantity }}</td>
+                                        <td>${{ item.total_price }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card mt-4">
+                    <div class="card-header">
+                        Order Summary
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Total Amount Paid:</strong> ${{ order.amount_paid }}</p>
+                    </div>
+                </div>
+
+                <div class="text-center mt-4">
+                    <form method="POST" action="{% url 'generate_invoice' order.id %}">
+                        {% csrf_token %}
+                        <button type="submit" name="download_pdf" class="btn btn-success">Download PDF</button>
+                    </form>
+                    <br/>
+                    <a href="{% url 'index' %}" class="btn btn-outline-primary">Back to Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

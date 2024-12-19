@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- Header and other content here -->
+
+<div class="container">
+    {% if cart_products %}
+        {% for product in cart_products %}
+            <div class="card mb-3">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="{{ product.image.url }}" class="img-fluid rounded-start" alt="{{ product.name }}">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ product.name }}</h5>
+                            <p class="card-text">{{ product.description }}</p>
+                            <p class="card-text">$ {{ product.price }}</p>
+
+                            <!-- Quantity Adjustment -->
+                            <div class="row justify-content-center">
+                                <div class="col-md-2">Quantity:</div>
+                                <div class="col-md-4">
+                                    <button class="btn btn-secondary quantity-btn" data-product-id="{{ product.id }}" data-action="decrease">-</button>
+                                    <input type="text" class="form-control d-inline quantity-input" id="quantity-{{ product.id }}" value="{{ quantities[product.id|slugify] }}" readonly>
+                                    <button class="btn btn-secondary quantity-btn" data-product-id="{{ product.id }}" data-action="increase">+</button>
+                                </div>
+                            </div>
+
+                            <a href="{% url 'index' %}" class="btn btn-secondary">Home</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br/>
+        {% endfor %}
+    {% else %}
+        There's nothing in your cart...
+    {% endif %}
+</div>
+
+<script>
+    $(document).on('click', '.quantity-btn', function () {
+        var productId = $(this).data('product-id');
+        var action = $(this).data('action');
+        var quantityInput = $('#quantity-' + productId);
+        var currentQuantity = parseInt(quantityInput.val());
+
+        if (action === 'increase') {
+            quantityInput.val(currentQuantity + 1);
+        } else if (action === 'decrease' && currentQuantity > 1) {
+            quantityInput.val(currentQuantity - 1);
+        }
+
+        // Send updated quantity to server
+        $.ajax({
+            type: 'POST',
+            url: '{% url "cart_update" %}',
+            data: {
+                product_id: productId,
+                product_qty: quantityInput.val(),
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                action: 'post'
+            },
+            success: function (json) {
+                // Optionally, handle success here
+            },
+            error: function (xhr, errmsg, err) {
+                console.error(errmsg);
+                alert('There was an error updating the cart.');
+            }
+        });
+    });
+</script>
+
+{% endblock %}

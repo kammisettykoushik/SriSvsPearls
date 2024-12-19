@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+{% include 'mainheader.html' %}
+<div class="container mt-4 mb-3" style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; background-color: #f8e6d6; width: 50%; padding-bottom: 3px; border: 1px solid #033F3D;border-radius: 50px;">
+
+    <div class="form-container">
+        <h4 style="text-align: center;font-size: 50px;padding-top: 20px;color: white;">Resend OTP</h4>
+        <form method="POST" action="">
+            {% csrf_token %}
+
+                <!-- Email Field -->
+                <div class="input-group mb-4">
+        <span class="input-group-text border-0 bg-white">
+                        <i class="bi bi-envelope-fill text-muted"></i>
+                    </span>
+        <input type="text" name="otp_email" class="form-control" placeholder="Enter Your Mail ID" required autocomplete="on">
+    </div>
+            <div class="d-flex justify-content-center mt-4">
+                    <button class="btn" style="background-color: skyblue; color:white;width: 150px;">
+                        <b>Send OTP</b>
+                    </button>
+                </div>
+            {% comment %}
+            <div class="d-flex justify-content-between align-items-center mt-3" style="margin-left: 10px;">
+                <p>Need a new OTP? <a href="#" class="text-dark text-decoration-underline">Resend OTP</a> </p>
+
+            </div>
+            {% endcomment %}
+            {% if form.errors %}
+    <div class="alert alert-danger">
+        <ul>
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+
+
+
+        </form>
+</div>
+</div>
+{% endblock %}

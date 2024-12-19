@@ -1,0 +1,6 @@
+media/video/*.mp4
+media/video/*.mov
+media/video/*.avi
+# Add more file extensions as needed
+# Large files
+media/video/*

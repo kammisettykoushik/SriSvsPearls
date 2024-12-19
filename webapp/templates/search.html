@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% include 'mainheader.html' %}
+
+<header class="py-1"
+    style="background-color:#e0a165;margin-top:-10px;font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
+    <div class="container px-4">
+        <div class="text-center text-white">
+            <h1 style="color: white;" class="display-10 fw-bolder">{{ category }}</h1>
+        </div>
+    </div>
+</header>
+<section class="py-5">
+    <!-- Sorting Links -->
+    <div class="container py-4">
+        <div class="d-flex justify-content-center" style="margin-top: -50px;">
+            <a href="?searched={{ query }}&sort=name&page=1"
+               class="btn me-3 px-4 py-2 sort-button" style="background-color:#e0a165;color: white;">Sort by Name</a>
+            <a href="?searched={{ query }}&sort=price&page=1"
+               class="btn me-3 px-4 py-2 sort-button" style="background-color:#e0a165;color: white;">Sort by Price</a>
+            <a href="?searched={{ query }}&sort=created_at&page=1"
+               class="btn px-4 py-2 sort-button" style="background-color:#e0a165;color: white;">Sort by Date</a>
+        </div>
+    </div>
+    <div class="container px-4 px-lg-5"
+        style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-lg-4 justify-content-center">
+            {% if searched %}
+    {% for product in searched %}
+            <div class="col mb-5 d-flex justify-content-center align-items-center">
+                <div class="card shadow rounded small-card" style="width: 100%; max-width: 20rem; border-color: gray;">
+                    <div class="p-3">
+                        <div class="p-2 border  rounded" style="overflow: hidden;">
+                            <img class="card-img-top image-container img-transition rounded"
+                                src="{{ product.image.url }}" alt="{{ product.name }}"
+                                style="height: 100px; object-fit: contain;" />
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <p class="text-muted mb-0 d-flex align-items-center">
+                                {% if product.is_sale %}
+                                <del class="me-2"> {{ product.price }}</del>
+                                <span style="color: maroon;"> {{ product.sale_price }}</span>
+                                {% else %}
+                                <span class="text-dark">{{ product.price }}</span>
+                                {% endif %}
+                            </p>
+                            <h6 class="mb-0 d-flex align-items-center">Q:
+                                <select class="form-select form-select-sm qty-cart ms-2"
+                                    data-product-id="{{ product.id }}"
+                                    style="border-width: 0 1px; border-color:lightgray;">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </h6>
+                        </div>
+
+                        <p style="margin-top: 5px; color: orangered;">10% OFF on Making</p>
+                        <h6 class="mt-2 font-weight-bold text-truncate" style="color: black;">{{ product.name }}</h6>
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="{% url 'product' product.id %}" class="btn btn-outline-dark btn-sm"
+                                style="border: none;border: 1px solid #033F3D;">View Details</a>
+                            <button type="button" class="btn btn-outline-dark add-to-cart btn-sm" data-product-id="{{ product.id }}"
+                                style="border: none;border: 1px solid #033F3D;">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+   <nav aria-label="Page navigation" style="font-family: Georgia, 'Times New Roman', Times, serif;">
+    <ul class="pagination justify-content-center">
+        {% if searched.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?searched={{ query }}&page={{ searched.previous_page_number }}" aria-label="Previous">
+                    <span aria-hidden="true">Previous</span>
+                </a>
+            </li>
+        {% endif %}
+
+        {% for num in searched.paginator.page_range %}
+            {% if searched.number == num %}
+                <li class="page-item active">
+                    <span class="page-link">{{ num }}</span>
+                </li>
+            {% elif num > searched.number|add:'-2' and num < searched.number|add:'2' %}
+                <li class="page-item">
+                    <a class="page-link" href="?searched={{ query }}&page={{ num }}">{{ num }}</a>
+                </li>
+            {% endif %}
+        {% endfor %}
+
+        {% if searched.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?searched={{ query }}&page={{ searched.next_page_number }}" aria-label="Next">
+                    <span aria-hidden="true">Next</span>
+                </a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
+
+</section>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).on('click', '.add-to-cart', function (e) {
+        e.preventDefault();
+        const productId = $(this).data('product-id');
+        const quantity = $(`.qty-cart[data-product-id=${productId}] option:selected`).val();
+
+        $.ajax({
+            type: 'POST',
+            url: '{% url "cart_add" %}',
+            data: {
+                product_id: productId,
+                product_qty: quantity,
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                action: 'post'
+            },
+            success: function (json) {
+                document.getElementById("cart_quantity").textContent = json.qty;
+                location.reload();
+            },
+            error: function (xhr, errmsg, err) {
+                console.error(errmsg);
+                alert('There was an error adding the item to the cart.');
+            }
+        });
+    });
+</script>
+
+<style>
+    .image-container {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .img-transition img {
+        transition: transform 0.3s ease-in-out;
+        display: block;
+        width: 100%;
+    }
+
+    .img-transition img:hover {
+        transform: scale(1.1);
+    }
+</style>
+{% endblock %}

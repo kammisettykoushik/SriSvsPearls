@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Header-->
+{% include 'mainheader.html' %}
+<header class="py-1" style="background-color: #e0a165;">
+    <div class="container px-4">
+        <div class="text-center text-white">
+            <h1 style="color:white;font-family: Georgia, 'Times New Roman', Times, serif;font-size:40px;" class="display-4 fw-bolder">
+                Please Enter the Details:-</h1>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+
+<div class="row">
+    <div class="col-12 col-md-8 offset-md-2">
+        <br /><br />
+
+        <!-- Nav tabs -->
+        <div class="container p-0">
+
+            <div class="row">
+                <div class="col-12">
+                    <ul class="nav nav-tabs" id="addressTabs" role="tablist" style="border-bottom: none;">
+                        <li class="nav-item" role="presentation">
+                            <button
+                                class="nav-link active"
+                                id="billing-tab"
+                                data-bs-toggle="tab"
+                                data-bs-target="#billing"
+                                type="button"
+                                role="tab"
+                                aria-controls="billing"
+                                aria-selected="true"
+                                style="border-bottom: none; background-color: whitesmoke; border-radius: 10px; text-align: center;">
+                                BILLING ADDRESS
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button
+                                class="nav-link"
+                                id="shipping-tab"
+                                data-bs-toggle="tab"
+                                data-bs-target="#shipping"
+                                type="button"
+                                role="tab"
+                                aria-controls="shipping"
+                                aria-selected="false"
+                                style="border-bottom: none; background-color: whitesmoke; border-radius: 10px; text-align: center;">
+                                SHIPPING ADDRESS
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="billing" role="tabpanel" aria-labelledby="billing-tab">
+                <br />
+                <h2 style="color:#e0a165 ;"><strong>Billing Address</strong></h2>
+                <br />
+                <form method="POST" action="{% url 'update_info' %}" style="width: 70%;">
+                    {% csrf_token %}
+                    <input type="hidden" name="form_type" value="billing">
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-secondary w-100 w-md-auto">Update Profile</button>
+                </form>
+            </div>
+
+            <div class="tab-pane fade" id="shipping" role="tabpanel" aria-labelledby="shipping-tab">
+                <br />
+                <h2 style="color: #e0a165;"><strong>Shipping Address</strong></h2>
+                <br />
+                <form method="POST" action="{% url 'update_info' %}" style="width: 70%;">
+                    {% csrf_token %}
+                    <input type="hidden" name="form_type" value="shipping">
+                    {{ shipping_form.as_p }}
+                    <button type="submit" class="btn btn-secondary w-100 w-md-auto">Update Profile</button>
+                </form>
+            </div>
+        </div>
+
+        <br />
+        <a href="{% url 'update_password' %}" class="btn w-md-auto" style="background-color: rgb(54, 59, 61);color: white;width: 70%;">Update Password</a>
+        <br />
+    </div>
+</div>
+</div>
+
+{% endblock %}

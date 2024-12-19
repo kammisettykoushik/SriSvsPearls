@@ -1,0 +1,5 @@
+Django
+asgiref
+daphne
+Pillow
+reportlab

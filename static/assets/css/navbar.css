@@ -1,0 +1,141 @@
+/* Header Section Styles */
+header {
+    background-color: #343a40; /* Dark background for header */
+    padding: 1rem 0;
+}
+
+
+.header-toggler {
+    border: none;
+    /* background-color: #0e0e0e; */
+    padding: 0.5rem 1rem; /* Ensure the button is large enough */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header-toggler-icon {
+    background-image: url('data:image/svg+xml;charset=utf8,%3Csvg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath stroke="rgba%28255, 255, 255, 0.55%29" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" d="M4 7h22M4 15h22M4 23h22"/%3E%3C/svg%3E');
+    background-size: 24px 24px; /* Adjust as needed */
+    background-repeat: no-repeat;
+    width: 24px; /* Adjust width as needed */
+    height: 24px; /* Adjust height as needed */
+}
+
+/* Header Navigation Styles */
+#productnames ul.nav {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+    background-color:white !important;
+    /* padding-top: 20px; */
+}
+#productnames ul.nav > li {
+    margin-bottom: 10px;
+}
+
+#productnames ul.nav > li > a {
+    color: #ffffff;
+    text-decoration: none;
+    /* padding-top: 20px; */
+    background-color:white !important;
+}
+
+#productnames ul.nav > li > a:hover,
+#productnames ul.nav > li > a:focus {
+    /* background-color: #333333; */
+}
+
+#productnames ul.nav > li > ul.dropdown-menu {
+    display: none;
+    position: relative;
+    left: 0;
+    top: 0;
+    /* background-color: #212121; */
+    padding: 10px 0;
+}
+
+#productnames ul.nav > li:hover > ul.dropdown-menu {
+    display: block;
+}
+
+#productnames ul.nav > li > ul.dropdown-menu > li {
+    padding: 5px 15px;
+}
+
+#productnames ul.nav > li > ul.dropdown-menu > li > a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+#productnames ul.nav > li > ul.dropdown-menu > li > a:hover {
+    background-color: rgba(239, 213, 43, 0.96);
+}
+
+/* Mobile Layout Adjustments */
+@media (max-width: 768px) {
+    #productnames ul.nav {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+    }
+
+    #productnames ul.nav > li {
+        display: block;
+        width: 100%;
+    }
+
+    #productnames ul.nav > li > a {
+        padding: 10px 15px;
+        width: 100%;
+    }
+
+
+
+}
+
+/* Desktop-specific styles */
+@media (min-width: 769px) {
+    .header-toggler {
+        display: none;
+    }
+
+    .header-collapse {
+        display: block !important;
+    }
+
+}
+
+/* Css For Testimonials in index template */
+
+.testimonials .card {
+      border: none;
+      background-color: #f8f9fa;
+    }
+
+    .testimonials .card-title {
+      font-size: 1.5rem;
+      color: #ffc107; /* Star color */
+    }
+
+    .testimonials .card-text {
+      font-size: 1rem;
+      font-style: italic;
+    }
+
+    .testimonials .display-4 {
+      font-size: 3rem;
+      font-weight: 700;
+    }
+
+
+/* Css For reviews section */
+
+.star-filled {
+    color: gold; /* Change to gold color for filled stars */
+}
+
+.star-empty {
+    color: lightgray; /* Change to light gray color for empty stars */
+}

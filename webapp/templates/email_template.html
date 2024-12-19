@@ -1,0 +1,67 @@
+{% load static %}
+<!-- templates/email_template.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unauthorized Access Alert</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .header {
+            background-color: #004080;
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+        }
+        .header img {
+            max-width: 150px;
+        }
+        .content {
+            padding: 20px;
+        }
+        .footer {
+            background-color: #004080;
+            color: #ffffff;
+            text-align: center;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGyCO91mL-I72BnfATM3SzjMMBMTjgKXt36g&s" style="width: 13% ; height: 6%" alt="SriSvsPearls Logo">
+            <h1>Access Alert</h1>
+        </div>
+        <div class="content">
+            <p>Dear Admin,</p>
+            <p>There was an unauthorized attempt to access the admin page of SriSvsPearls.</p>
+            <p><strong>Details:</strong></p>
+            <ul>
+                <li><strong>IP Address:</strong> {{ ip }}</li>
+                <li><strong>Path:</strong> {{ path }}</li>
+                <li><strong>Time:</strong> {{ current_time }}</li>
+            </ul>
+            <p>Please take the necessary actions to secure your website.</p>
+        </div>
+        <div class="footer">
+            &copy; 2024 SriSvsPearls. All rights reserved.
+        </div>
+    </div>
+</body>
+</html>

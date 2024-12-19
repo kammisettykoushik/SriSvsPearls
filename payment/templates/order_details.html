@@ -1,0 +1,58 @@
+
+<!-- user_orders.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h2 class="text-center">Your Orders</h2>
+
+        {% if orders %}
+            {% for order in orders %}
+                <div class="card mt-4">
+                    <div class="card-header">
+                        Order #{{ order.id }} - Status:
+                        {% if order.status == 'P' %}
+                            Pending
+                        {% elif order.status == 'S' %}
+                            Shipped
+                        {% elif order.status == 'D' %}
+                            Delivered
+                        {% elif order.status == 'C' %}
+                            Canceled
+                        {% endif %}
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Name:</strong> {{ order.full_name }}</p>
+                        <p><strong>Email:</strong> {{ order.email }}</p>
+                        <p><strong>Shipping Address:</strong> {{ order.shipping_address }}</p>
+
+                        <!-- Displaying Order Items -->
+                        <h5 class="mt-4">Order Items:</h5>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in order.orderitem_set.all %}
+                                    <tr>
+                                        <td>{{ item.product.name }}</td>
+                                        <td>${{ item.price }}</td>
+                                        <td>{{ item.quantity }}</td>
+                                        <td>$</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No orders found.</p>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- Header-->
+{% include 'mainheader.html' %}
+<br/>
+<div class="container">
+
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <div class="card">
+            <div class="card-header">
+                Order Summary
+            </div>
+            <div class="card-body">
+                {% for product in cart_products %}
+                    {{ product.name }}
+                    {% if product.is_sale %}
+                        ${{ product.sale_price }}
+                    {% else %}
+                        ${{ product.price }}
+                    {% endif %}
+                    <br/>
+                    <small> Quantity:
+                        {% for key, value in quantities.items %}
+                            {% if key == product.id|slugify %}
+                                {{ value }}
+                            {% endif %}
+                        {% endfor %}
+                    </small>
+                    <br/><br/>
+                {% endfor %}
+                <strong>Total: $ {{ totals }} </strong>
+                <br/><br/>
+                <a href="{% url 'cart_summary' %}" class="btn btn-sm btn-outline-secondary">Update items</a>
+            </div>
+        </div>
+        <br/><br/>
+
+        <div class="card">
+            <div class="card-header">
+                Billing Address
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{% url 'checkout' %}">
+                    {% csrf_token %}
+                    {{ billing_form.as_p }}
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="shipDifferentAddress" name="shipDifferentAddress" onclick="toggleShippingAddress()">
+                        <label class="form-check-label" for="shipDifferentAddress">Ship to a different address</label>
+                    </div>
+                    <div id="shippingAddress" style="display: none;">
+                        {{ shipping_form.as_p }}
+                    </div>
+                    <br/>
+                    <button type="submit" class="btn btn-secondary">Continue to Billing</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<script>
+    function toggleShippingAddress() {
+        var checkbox = document.getElementById("shipDifferentAddress");
+        var shippingAddress = document.getElementById("shippingAddress");
+        var shippingInputs = shippingAddress.querySelectorAll('input, select, textarea');
+
+        if (checkbox.checked) {
+            shippingAddress.style.display = "block";
+            shippingInputs.forEach(function(input) {
+                input.required = true;
+            });
+        } else {
+            shippingAddress.style.display = "none";
+            shippingInputs.forEach(function(input) {
+                input.required = false;
+            });
+        }
+    }
+
+    window.onload = function() {
+        toggleShippingAddress();
+    };
+</script>
+
+{% endblock %}

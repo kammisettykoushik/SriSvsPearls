@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% block content %}
+{% include 'mainheader.html' %}
+<br />
+<div class="container" style="font-family: Georgia, 'Times New Roman', Times, serif;">
+  {% for product in products %}
+  <div class="card mb-3">
+    <div class="row g-0">
+      <div class="col-md-4">
+        <img src="{{ product.image.url }}" class="img-fluid rounded-start" alt="...">
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h4 class="card-title">{{ product.name }}</h4>
+          <p class="card-text">
+          <h5>Description:</h5> {{ product.description }} </p>
+
+          {% if product.is_sale %}
+         
+          <div class="d-flex justify-content  text-warning mb-2">
+            <div class="bi-star-fill"></div>
+            &nbsp; Discount Sale &nbsp;
+            <div class="bi-star-fill"></div>
+          </div>
+        
+          <strike> ${{ product.price }} </strike>
+          &nbsp; ${{ product.sale_price }}
+          {% else %}
+          ${{ product.price }}
+
+          {% endif %}
+          <br /> <br /><br />
+          <div class="row justify-content">
+            <div class="col-md-2">Quantity:</div>
+            <div class="col-md-2">
+
+
+              <select class="form-select form-select-sm" id="qty-cart">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
+            </div>
+          </div>
+          <br />
+
+          <a href="{% url 'index' %}" class="btn btn-secondary">Home</a>
+          <button class="btn btn-secondary" onclick="window.history.back()">Go Back</button>
+
+          <button type="button" value="{{ product.id }}" class="btn btn-secondary" id="add-cart">Add to Cart</button>
+          <a href="{% url 'cart_summary' %}" class="btn btn-secondary">Go to Cart</a>
+
+          <br /> <br /><br /><br />
+
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+
+  <br /> <br /><br /><br />
+  <br /><br /><br /><br /><br /><br /><br />
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+  $(document).on('click', '#add-cart', function (e) {
+    e.preventDefault();
+    const productId = $(this).val();
+   
+    $.ajax({
+      type: 'POST',
+      url: '{% url "cart_add" %}',
+      data: {
+        product_id: $('#add-cart').val(),
+        product_qty: $('#qty-cart option:selected').text(),
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        action: 'post'
+      },
+      success: function (json) {
+
+        document.getElementById("cart_quantity").
+          textContent = json.qty
+        location.reload();
+      },
+      error: function (xhr, errmsg, err) {
+        console.error(errmsg);
+        alert('There was an error adding the item to the cart.');
+      }
+    });
+  });
+</script>
+
+{% endblock %}
+{% include 'footer.html' %}

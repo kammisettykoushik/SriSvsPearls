@@ -1,0 +1,280 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg " style="background-color:#e0a165;">
+  <div class="container-fluid">
+    <!-- Left Side: Brand and Name -->
+    <div class="d-flex align-items-center">
+      <a class="navbar-brand" href="{% url 'index' %}">
+        <img src="{% static 'img/svslogo.png' %}" width="80px" alt="srisvsjewellery">
+        <b class="titleclass" style="color:rgb(241, 8, 8); font-family: Georgia, 'Times New Roman', Times, serif;">Pearls & Imitation Jewellery</b>
+      </a>
+    </div>
+    <div class="profilemobileview">
+      {% if user.is_authenticated %}
+      <div class="dropdown">
+        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
+          aria-expanded="false">
+          <img
+            src="{% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'default-profile.png' %}{% endif %}"
+            alt="Profile Picture" class="rounded-circle" width="40" height="40">
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="profileDropdown">
+          <li><a class="dropdown-item" href="{% url 'update_user' %}">{{ user }} Profile</a></li>
+          <li><a class="dropdown-item" href="{% url 'update_info' %}">{{ user }} Address</a></li>
+          <li><a class="dropdown-item" href="{% url 'order_details' order_id=user.id %}">Your Orders</a></li>
+        </ul>
+      </div>
+      {% endif %}
+    </div>
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+      aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent" style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'index' %}" style="color: white;">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'blog' %}" style="color: white;">Blog</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: white;">
+            Categories
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{% url 'all_products' %}">All Products</a></li>
+            <li><a class="dropdown-item" href="{% url 'category' 'Traditional Jewellery' %}">Popular Items</a></li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href="{% url 'category' 'Bracelets Jewellery' %}">New Arrivals</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    <div class="d-flex">
+      <!-- Search form -->
+      <form class="d-flex search-form" action="{% url 'search' %}" method="get" role="search">
+        <div class="search-input-container position-relative">
+          <input class="form-control search-input pe-5" type="search" placeholder="Search" aria-label="Search"
+            name="searched">
+
+          <!-- Camera Icon Button (rightmost) -->
+          <!-- <button class="btn position-absolute end-0 top-50 translate-middle-y me-3" type="button" aria-label="Camera search">
+                      <i class="fa fa-camera"></i>
+                  </button> -->
+
+          <!-- Microphone Icon Button -->
+          <!-- <button class="btn position-absolute end-0 top-50 translate-middle-y me-5" type="button" aria-label="Voice search">
+                      <i class="fa fa-microphone"></i>
+                  </button> -->
+
+          <!-- Search Icon Button (leftmost) -->
+          <button class="btn position-absolute top-50 translate-middle-y" style="right:-6px;" type="submit">
+            <i class="fa fa-search"></i>
+          </button>
+
+        </div>
+      </form>
+
+
+
+
+      &nbsp;
+
+
+
+      <div class="profiledesktopview" style="margin-left: 20px;margin-top: 10px;">
+        {% if user.is_authenticated %}
+        <div class="dropdown">
+          <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            <img
+              src="{% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'default-profile.png' %}{% endif %}"
+              alt="Profile Picture" class="rounded-circle" width="40" height="40">
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="profileDropdown">
+            <li><a class="dropdown-item" href="{% url 'update_user' %}">{{ user }} Profile</a></li>
+            <li><a class="dropdown-item" href="{% url 'update_info' %}">{{ user }} Address</a></li>
+          </ul>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Cart and Profile -->
+      <div class="d-flex align-items-center ms-3">
+        <a href="{% url 'cart_summary' %}" class="btn me-2 d-flex flex-column align-items-center">
+          <!-- Cart Icon with Badge -->
+          <i class="bi-cart mb-1 position-relative" style="font-size: 20px;color: white;">
+            <span
+              class="badge bg-danger text-white ms-1 rounded-pill position-absolute top-0 start-100 translate-middle"
+              id="cart_quantity" style="font-size: 10px;">
+              {{ cart|length }}
+            </span>
+          </i>
+
+          <!-- Cart Text Below Icon -->
+          <span class="small text-center" style="margin-top: -6px;color: white;font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">Cart</span>
+        </a>
+      </div>
+      <!-- <div class="d-flex flex-column align-items-center" style="margin-top: 7px;"> -->
+        <!-- Wishlist Icon -->
+        <!-- <i class="bi-heart mb-1" style="font-size: 20px;color: white;"></i> -->
+
+        <!-- Wishlist Text Below Icon -->
+        <!-- <span class="small text-center" style="margin-top: -6px;color: white;font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">Wishlist</span> -->
+      <!-- </div> -->
+
+    </div>
+
+    <div class="loginsignout" style="margin-left: 30px;">
+      <div class="d-flex align-items-center">
+        {% if user.is_authenticated %}
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item" style="list-style-type: none;"> <a class="btn"
+              href="{% url 'logout' %}" style="white-space: nowrap;color: white;border-color: white;">
+              <i class="bi bi-box-arrow-left me-2" style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;"
+              ></i>Sign Out
+            </a> </li>
+          {% else %}
+          <li class="nav-item" style="list-style-type: none;"> <a class="btn" href="{% url 'login' %}" style="color: white;border-color:white;font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">
+              <!-- <i class="bi bi-box-arrow-in-right me-2"></i> -->
+              Login
+            </a> </li>
+          <li class="nav-item" style="list-style-type: none;"> <a class="btn"
+              href="{% url 'register' %}" style="white-space: nowrap;margin-left: 10px;color: white;font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;border-color: white;">
+              <!-- <i class="bi bi-r-square-fill"></i> -->
+              Register
+            </a> </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+  <div class="offcanvas-header">
+    <!--      <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Offcanvas</h5>-->
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'blog' %}">Blog</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Categories
+        </a>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="{% url 'all_products' %}">All Products</a></li>
+          <li><a class="dropdown-item" href="{% url 'category' 'Traditional Jewellery' %}">Popular Items</a></li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li><a class="dropdown-item" href="{% url 'category' 'Bracelets Jewellery' %}">New Arrivals</a></li>
+        </ul>
+      </li>
+
+      {% if user.is_authenticated %}
+      <li class="nav-item"> <a class="btn btn-outline-secondary ms-2 d-flex" href="{% url 'logout' %}"
+          style="white-space: nowrap;font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
+          <i class="bi bi-box-arrow-left me-2"></i>Sign Out
+        </a> </li>
+      {% else %}
+      <li class="nav-item"> <a class="btn ms-2" href="{% url 'login' %}" >
+          <!-- <i class="bi bi-box-arrow-in-right me-2"></i> -->
+          Login
+        </a>
+      </li>
+      <li class="nav-item"> <a class="btn btn-outline-dark ms-2" href="{% url 'register' %}"
+          style="white-space: nowrap;">
+          <!-- <i class="bi bi-r-square-fill"></i>  -->
+          Register
+        </a> </li>
+      {% endif %}
+    </ul>
+  </div>
+</div>
+<!--style for nav bar -->
+<style>
+  .container-fluid {
+    display: flex;
+    flex-direction: row;
+    /* Adjust the direction as needed */
+    justify-content: space-between;
+    /* Adjust the alignment as needed */
+  }
+
+  .search-form {
+    align-items: center;
+  }
+
+  .search-input-container {
+    flex-grow: 1;
+    max-width: 300px;
+    transition: max-width 0.3s ease;
+  }
+
+  .search-input {
+    /* border-radius: 25px; */
+    padding: 9px;
+    transition: width 0.3s ease-in-out;
+    box-shadow: none;
+  }
+
+  .search-input:focus {
+    width: 100%;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+    border: none;
+  }
+
+  .search-button {
+    font-size: 18px;
+    margin-left: 1px;
+    background-color: #28a745;
+    color: white;
+    border-radius: 10px;
+    border: none;
+  }
+
+  .search-button:hover {
+    background-color: #218838;
+  }
+
+
+  @media (min-width: 768px) {
+    .profilemobileview {
+      display: none;
+      /* Hide and remove from layout */
+    }
+  }
+
+  /*css for display none for login and register in media*/
+  @media (max-width: 768px) {
+    .navbar-brand img {
+      width: 50px;
+    }
+
+    .titleclass {
+      font-size: 15px;
+    }
+
+    .loginsignout {
+      display: none;
+      /* Hide and remove from layout */
+    }
+
+    .profiledesktopview {
+      display: none;
+      /* Hide and remove from layout */
+    }
+
+  }
+</style>

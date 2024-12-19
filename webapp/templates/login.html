@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Header-->
+{% include 'mainheader.html' %}
+<!-- <header class="bg-dark py-1">
+    <div class="container px-4">
+        <div class="text-center text-white">
+            <h1 style="color: #aaaaaa;" class="display-4 fw-bolder">Please Log-In Here:</h1>
+        </div>
+    </div>
+</header> -->
+
+<!-- <div class="container-fluid d-flex justify-content-center align-items-center" style="height: 300px;">
+    <div class="row" style="background-color:rgb(250, 244, 245); border-radius: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); width: 600px; margin: 20px;">
+        <div class="col-6 d-flex align-items-center" style="position: relative;">
+            <div class="text-overlay-container" style="background-image: url('https://www.purepearls.in/wp-content/uploads/2019/12/buy-cultured-pearls-online-india.jpg'); background-size: cover; background-position: center; height: 100%; width: 100%; border-radius: 20px 0 0 20px; position: relative;">
+                <div class="overlay-text text-center" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; margin-left: -30px;">
+                    <marquee direction="up"><h1 style="color: black;">Hi!</h1></marquee>
+                   <marquee direction="up"> <h6 style="font-size: 25px;white-space: nowrap; color:black;">Welcome to SVS!</h6></marquee>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 p-4">
+            <form method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                <div class="form-group mb-3">
+                    <label for="username">UserName:</label>
+                    <input type="text" class="form-control" name="username" id="username" placeholder="Enter Your Username" style="width: 100%;">
+                </div>
+                <div class="form-group mb-3">
+                    <label for="password">Password:</label>
+                    <div class="password-container position-relative">
+                        <input type="password" class="form-control" name="password" id="password" placeholder="Enter Your Password" style="width: 100%;">
+                        <span class="password-toggle position-absolute" id="toggle-password" style="top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;">
+                            <i class="bi bi-eye" id="toggle-password-icon"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-secondary" style="background-color: rgb(53, 156, 197);border: none;">Login</button>
+                </div>
+                <div style="align-items: center;text-align: center;margin-top: 10px;cursor: pointer;">
+                    <a href="#">Forgot Password</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div> -->
+
+<div class="container mt-3 mb-3" style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; background-color: #fffff; padding: 30px;width:50%;border: 1px solid #033F3D;border-radius: 50px;">
+    <div class="text-center">
+        <h4 class="display-6 text-black">Log-in</h4>
+    </div>
+    <div class="mx-auto mt-5" style="max-width: 400px;">
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+        <div class="form-group">
+            <!-- Email input with icon -->
+            <div class="input-group mb-4">
+                <span class="input-group-text border-0 bg-white">
+                    <i class="bi bi-envelope-fill text-muted"></i>
+                </span>
+                <input type="text" class="form-control" name="username_or_email_or_mobile" id="username" placeholder="Username, Email or Mobile" required autocomplete="on">
+            </div>
+
+            <!-- Password input with custom padding -->
+            <div class="input-group mb-4  mb-3 position-relative">
+                <span class="input-group-text border-0 bg-white" style="padding-right: 10px;">
+                    <i class="fa fa-lock" style="color: #6c757d;"></i>
+                </span>
+                <input type="password" name="password" id="password" class="form-control" placeholder="Enter Your Password" required autocomplete="off">
+                <i class="fa fa-eye position-absolute" id="togglePassword1" style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;" onclick="togglePasswordVisibility('password', 'togglePassword1')"></i>
+            </div>
+        </div>
+
+        <!-- Remember me checkbox and Forgot password link -->
+        <div class="d-flex justify-content-between align-items-center mt-3">
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="rememberMe" style="accent-color: white;">
+                <label class="form-check-label" for="rememberMe">Remember me</label>
+            </div>
+            <a href="{% url 'forgot_password' %}" class="text-dark text-decoration-underline">Forgot password?</a>
+        </div>
+
+        <!-- Login button with shadow effect -->
+        <div class="d-flex justify-content-center mt-4">
+            <button class="btn shadow" style="background-color: black; color: white;width: 150px;">
+                <b>Log in</b>
+            </button>
+        </div>
+
+        <!-- Social login options -->
+        <div class="text-center mt-4">
+            <p class="text-white">Log in with</p>
+            <div class="d-flex justify-content-center">
+                <a href="https://www.google.com" target="_blank">
+                    <img src="https://53.fs1.hubspotusercontent-na1.net/hub/53/hubfs/image8-2.jpg?width=595&height=400&name=image8-2.jpg"
+                        alt="Google" class="me-2 rounded border" style="width: 40px; height: 40px;">
+                </a>
+
+                <a href="https://www.facebook.com" target="_blank">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/cd/Facebook_logo_%28square%29.png"
+                        alt="Facebook" class="rounded border" style="width: 40px; height: 40px;">
+                </a>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+
+
+
+<!-- Bootstrap icons CDN for email icon -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+
+
+
+<script>
+
+    function togglePasswordVisibility(passwordFieldId, toggleIconId) {
+        var passwordField = document.getElementById(passwordFieldId);
+        var toggleIcon = document.getElementById(toggleIconId);
+
+        // Check if password is of type 'password' or 'text'
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+            toggleIcon.classList.remove("fa-eye");
+            toggleIcon.classList.add("fa-eye-slash");
+        } else {
+            passwordField.type = "password";
+            toggleIcon.classList.remove("fa-eye-slash");
+            toggleIcon.classList.add("fa-eye");
+        }
+    }
+
+</script>
+
+<style>
+    .password-container {
+        position: relative;
+        margin-bottom: 1rem;
+    }
+
+    .password-container .form-control {
+        padding-right: 3rem;
+        /* Space for the eye icon */
+    }
+
+    .password-toggle {
+        position: absolute;
+        top: 50%;
+        right: 0.75rem;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #007bff;
+        /* Color of the eye icon */
+    }
+
+    .password-toggle .bi-eye {
+        font-size: 1.2rem;
+    }
+
+    .password-container {
+        position: relative;
+    }
+
+    .password-container {
+        position: relative;
+    }
+
+    .password-toggle {
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        cursor: pointer;
+    }
+
+    input::placeholder {
+        color: black;
+        /* Placeholder text color */
+    }
+</style>
+
+
+
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
+
+
+{%endblock%}
