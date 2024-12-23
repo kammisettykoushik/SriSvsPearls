@@ -46,16 +46,34 @@ def payment_success_view(request):
 
 
 @login_required
+def orders_summary(request):
+    # Fetch all orders for the logged-in user
+    orders = Order.objects.filter(user=request.user)
+
+    # Calculate the total price for each order if it's not already calculated in the model
+    for order in orders:
+        order.total_price = sum(item.price * item.quantity for item in OrderItem.objects.filter(order=order))
+
+    return render(request, 'user_orders.html', {'orders': orders})
+
+
+@login_required
 def order_details(request, order_id):
-    # Get the order from the database
-    order = get_object_or_404(Order, pk=order_id, user=request.user)
+    order = get_object_or_404(Order, id=order_id, user=request.user)
     order_items = OrderItem.objects.filter(order=order)
+
+    # Calculate total price for each order item
+    for item in order_items:
+        item.total_price = item.price * item.quantity
+
     shipping_address = ShippingAddress.objects.filter(user=order.user).first()
+    if not shipping_address:
+        shipping_address = None  # or handle the case accordingly
 
     return render(request, 'order_details.html', {
         'order': order,
-        'order_items': order_items,
         'shipping_address': shipping_address,
+        'order_items': order_items,
     })
 
 

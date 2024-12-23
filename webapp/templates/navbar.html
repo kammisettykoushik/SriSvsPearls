@@ -8,23 +8,7 @@
         <b class="titleclass" style="color:rgb(241, 8, 8); font-family: Georgia, 'Times New Roman', Times, serif;">Pearls & Imitation Jewellery</b>
       </a>
     </div>
-    <div class="profilemobileview">
-      {% if user.is_authenticated %}
-      <div class="dropdown">
-        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
-          aria-expanded="false">
-          <img
-            src="{% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'default-profile.png' %}{% endif %}"
-            alt="Profile Picture" class="rounded-circle" width="40" height="40">
-        </a>
-        <ul class="dropdown-menu" aria-labelledby="profileDropdown">
-          <li><a class="dropdown-item" href="{% url 'update_user' %}">{{ user }} Profile</a></li>
-          <li><a class="dropdown-item" href="{% url 'update_info' %}">{{ user }} Address</a></li>
-          <li><a class="dropdown-item" href="{% url 'order_details' order_id=user.id %}">Your Orders</a></li>
-        </ul>
-      </div>
-      {% endif %}
-    </div>
+
     <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
       aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -97,6 +81,9 @@
           <ul class="dropdown-menu" aria-labelledby="profileDropdown">
             <li><a class="dropdown-item" href="{% url 'update_user' %}">{{ user }} Profile</a></li>
             <li><a class="dropdown-item" href="{% url 'update_info' %}">{{ user }} Address</a></li>
+
+            <li><a class="dropdown-item" href="{% url 'orders_summary' %}">Your Orders</a></li>
+
           </ul>
         </div>
         {% endif %}

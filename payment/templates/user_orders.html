@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Header-->
+{% include 'mainheader.html' %}
+    <div class="container mt-5">
+        <h2 class="text-center text-primary mb-5">Your Orders</h2>
+
+        {% if orders %}
+            <div class="row">
+                {% for order in orders %}
+                    <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                        <div class="card custom-card shadow-lg border-0 rounded-lg">
+                            <div class="card-header d-flex justify-content-between align-items-center bg-gradient text-white">
+                                <span class="font-weight-bold">Order #{{ order.id }}</span>
+                                <a href="{% url 'order_details' order.id %}" class="btn btn-light btn-sm font-weight-bold">View Details</a>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title text-dark">{{ order.full_name }}</h5>
+                                <p><strong>Email:</strong> {{ order.email }}</p>
+                                <p><strong>Shipping Address:</strong> {{ order.shipping_address }}</p>
+                            </div>
+                            <div class="card-footer bg-transparent text-muted text-center">
+                                {% if order.status == 'P' %}
+                                    <span class="badge status-badge pending">Pending</span>
+                                {% elif order.status == 'S' %}
+                                    <span class="badge status-badge shipped">Shipped</span>
+                                {% elif order.status == 'D' %}
+                                    <span class="badge status-badge delivered">Delivered</span>
+                                {% elif order.status == 'C' %}
+                                    <span class="badge status-badge canceled">Canceled</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-center text-muted">No orders found.</p>
+        {% endif %}
+    </div>
+
+<style>
+    /* Global Styling for Containers and Text */
+    .container {
+        max-width: 1200px;
+    }
+
+    .text-primary {
+        color: #007bff;
+    }
+
+    /* Custom card styling */
+    .custom-card {
+        border-radius: 12px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        overflow: hidden;
+    }
+
+    .custom-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Gradient background for card headers */
+    .card-header.bg-gradient {
+        background: linear-gradient(135deg, #007bff, #6610f2);
+        border-radius: 12px 12px 0 0;
+    }
+
+    /* Styling the status badge */
+    .status-badge {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    .status-badge.pending {
+        background-color: #ffc107;
+        color: #212529;
+    }
+
+    .status-badge.shipped {
+        background-color: #17a2b8;
+        color: #fff;
+    }
+
+    .status-badge.delivered {
+        background-color: #28a745;
+        color: #fff;
+    }
+
+    .status-badge.canceled {
+        background-color: #dc3545;
+        color: #fff;
+    }
+
+    /* Adjusting the "No orders found" message */
+    .text-muted {
+        font-size: 1.1rem;
+    }
+
+    /* Custom hover animation for "View Details" button */
+    .card .btn-light:hover {
+        background-color: #f8f9fa;
+        color: #007bff;
+        box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+    }
+
+    /* Responsiveness for Card Layout */
+    .card {
+        border: none;
+        margin: 0 15px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Enhance Button Appearance */
+    .btn-light {
+        background-color: #fff;
+        border: 2px solid #007bff;
+        color: #007bff;
+        padding: 5px 10px;
+        font-weight: bold;
+        border-radius: 25px;
+    }
+
+    .btn-light:hover {
+        background-color: #007bff;
+        color: white;
+        box-shadow: 0 4px 6px rgba(0, 123, 255, 0.3);
+    }
+
+    /* Small screen optimizations */
+    @media (max-width: 768px) {
+        .card-header {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .card-body p {
+            font-size: 0.95rem;
+        }
+
+        .card-footer {
+            text-align: center;
+        }
+    }
+</style>
+
+{% endblock %}

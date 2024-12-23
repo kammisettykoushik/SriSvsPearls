@@ -1,58 +1,144 @@
-
-<!-- user_orders.html -->
 {% extends 'base.html' %}
 
 {% block content %}
+<!-- Header-->
+{% include 'mainheader.html' %}
     <div class="container mt-5">
-        <h2 class="text-center">Your Orders</h2>
+        <button onclick="window.history.back();" class="btn btn-outline-secondary font-weight-bold">
+            Back
+        </button>
 
-        {% if orders %}
-            {% for order in orders %}
-                <div class="card mt-4">
-                    <div class="card-header">
-                        Order #{{ order.id }} - Status:
-                        {% if order.status == 'P' %}
-                            Pending
-                        {% elif order.status == 'S' %}
-                            Shipped
-                        {% elif order.status == 'D' %}
-                            Delivered
-                        {% elif order.status == 'C' %}
-                            Canceled
-                        {% endif %}
-                    </div>
-                    <div class="card-body">
-                        <p><strong>Name:</strong> {{ order.full_name }}</p>
-                        <p><strong>Email:</strong> {{ order.email }}</p>
-                        <p><strong>Shipping Address:</strong> {{ order.shipping_address }}</p>
+        <h2 class="text-center text-primary mb-5">Order Details for Order #{{ order.id }}</h2>
 
-                        <!-- Displaying Order Items -->
-                        <h5 class="mt-4">Order Items:</h5>
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Product</th>
-                                    <th>Price</th>
-                                    <th>Quantity</th>
-                                    <th>Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for item in order.orderitem_set.all %}
-                                    <tr>
-                                        <td>{{ item.product.name }}</td>
-                                        <td>${{ item.price }}</td>
-                                        <td>{{ item.quantity }}</td>
-                                        <td>$</td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            {% endfor %}
-        {% else %}
-            <p>No orders found.</p>
-        {% endif %}
+        <!-- Shipping Information Card -->
+        <div class="card custom-card shadow-lg border-0 rounded-lg mb-4">
+            <div class="card-header bg-gradient text-white font-weight-bold">
+                Shipping Information
+            </div>
+            <div class="card-body">
+                <p><strong>Name:</strong> {{ order.full_name }}</p>
+                <p><strong>Email:</strong> {{ order.email }}</p>
+                <p><strong>Address:</strong></p>
+                <p>{{ order.shipping_address }}</p>
+            </div>
+        </div>
+
+        <!-- Order Items Card -->
+        <div class="card custom-card shadow-lg border-0 rounded-lg mb-4">
+            <div class="card-header bg-gradient text-white font-weight-bold">
+                Order Items
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Product</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in order_items %}
+                            <tr>
+                                <td>{{ item.product.name }}</td>
+                                <td>${{ item.price }}</td>
+                                <td>{{ item.quantity }}</td>
+                                <td>${{ item.total_price }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Order Summary Card -->
+        <div class="card custom-card shadow-lg border-0 rounded-lg mb-4">
+            <div class="card-header bg-gradient text-white font-weight-bold">
+                Order Summary
+            </div>
+            <div class="card-body">
+                <p><strong>Total Amount Paid:</strong> ${{ order.amount_paid }}</p>
+                <p><strong>Order Status:</strong>
+                    {% if order.status == 'P' %} Pending
+                    {% elif order.status == 'S' %} Shipped
+                    {% elif order.status == 'D' %} Delivered
+                    {% elif order.status == 'C' %} Canceled
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+
+        <!-- Back to Home Button -->
+        <div class="text-center mt-4">
+            <a href="{% url 'orders_summary' %}" class="btn btn-outline-primary font-weight-bold">
+                Back to Home
+            </a>
+        </div>
     </div>
+
+<style>
+    /* Custom card hover effect */
+    .custom-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Gradient background for the card headers */
+    .card-header.bg-gradient {
+        background: linear-gradient(135deg, #007bff, #6610f2);
+        border-radius: 12px 12px 0 0;
+    }
+
+    /* Styling the table rows for hover effects */
+    .table-hover tbody tr:hover {
+        background-color: #f1f1f1;
+        cursor: pointer;
+    }
+
+    /* Custom styling for the Back to Home button */
+    .btn-outline-primary {
+        font-size: 1.1rem;
+        padding: 0.6rem 1.5rem;
+        border-radius: 30px;
+    }
+
+    .btn-outline-primary:hover {
+        background-color: #007bff;
+        color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+    }
+
+    /* Custom styling for the Back Button */
+    .btn-outline-secondary {
+        font-size: 1rem;
+        padding: 0.5rem 1rem;
+        border-radius: 25px;
+        border-color: #6c757d;
+        color: #6c757d;
+    }
+
+    .btn-outline-secondary:hover {
+        background-color: #6c757d;
+        color: white;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Table customizations for a clean look */
+    .table-bordered th,
+    .table-bordered td {
+        border: 1px solid #e0e0e0;
+    }
+
+    .table thead th {
+        background-color: #343a40;
+        color: white;
+        font-weight: bold;
+    }
+
+    .table tbody td {
+        vertical-align: middle;
+    }
+</style>
+
 {% endblock %}
