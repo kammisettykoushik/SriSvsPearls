@@ -19,7 +19,7 @@
           <tr>
             <td>{{ order.id }}</td>
             <td>{{ order.created_at|date:"M d, Y" }}</td>
-            <td>${{ order.amount_paid }}</td>
+            <td>₹{{ order.amount_paid }}</td>
             <td>{{ order.status }}</td>
             <td>
               <a href="{% url 'order_details' order.id %}" class="btn btn-info btn-sm">View Details</a>

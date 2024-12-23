@@ -3,3 +3,5 @@ asgiref
 daphne
 Pillow
 reportlab
+plotly
+pandas

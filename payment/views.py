@@ -91,7 +91,7 @@ def generate_invoice(request, order_id):
         logo = ImageReader(logo_url)
         pdf_canvas.drawImage(logo, 20, 740, width=50, height=50)  # Adjust position and size as needed
         pdf_canvas.setFont("Helvetica-Bold", 16)
-        pdf_canvas.drawString(200, 750, f"Invoice for Order #{order.id}")
+        pdf_canvas.drawString(200, 750, f"Invoice for your order:")
 
         pdf_canvas.setFont("Helvetica", 10)
         pdf_canvas.drawString(30, 730, f"Order Date: {order.created_at.strftime('%B %d, %Y')}")

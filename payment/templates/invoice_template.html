@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-12 col-md-8 offset-md-2">
 
-                <h2 class="text-center"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGyCO91mL-I72BnfATM3SzjMMBMTjgKXt36g&s" style="width: 13% ; height: 6%" alt="SriSvsPearls Logo">Invoice for Order #{{ order.id }}</h2>
+                <h2 class="text-center"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGyCO91mL-I72BnfATM3SzjMMBMTjgKXt36g&s" style="width: 13% ; height: 6%" alt="SriSvsPearls Logo">Invoice for your order:</h2>
 
                 <div class="card mt-4">
                     <div class="card-header">
@@ -39,9 +39,9 @@
                                 {% for item in order_items %}
                                     <tr>
                                         <td>{{ item.product.name }}</td>
-                                        <td>${{ item.price }}</td>
+                                        <td>₹{{ item.price }}</td>
                                         <td>{{ item.quantity }}</td>
-                                        <td>${{ item.total_price }}</td>
+                                        <td>₹{{ item.total_price }}</td>
                                     </tr>
                                 {% endfor %}
                             </tbody>
@@ -54,7 +54,7 @@
                         Order Summary
                     </div>
                     <div class="card-body">
-                        <p><strong>Total Amount Paid:</strong> ${{ order.amount_paid }}</p>
+                        <p><strong>Total Amount Paid:</strong> ₹{{ order.amount_paid }}</p>
                     </div>
                 </div>
 

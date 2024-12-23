@@ -42,10 +42,10 @@
           <!-- Price and Discount -->
           <div class="mb-2">
             {% if product.is_sale %}
-              <span class="text-danger fw-bold fs-5">${{ product.sale_price }}</span>
-              <strike class="text-muted small">${{ product.price }}</strike>
+              <span class="text-danger fw-bold fs-5">₹{{ product.sale_price }}</span>
+              <strike class="text-muted small">₹{{ product.price }}</strike>
             {% else %}
-              <span class="fw-bold fs-5">${{ product.price }}</span>
+              <span class="fw-bold fs-5">₹{{ product.price }}</span>
             {% endif %}
           </div>
 
@@ -74,7 +74,7 @@
 
     {% endfor %}
 <div align="right">
-    <h3 class="fw-bolder text-danger" >Total: ${{ totals }}</h3>
+    <h3 class="fw-bolder text-danger" >Total: ₹{{ totals }}</h3>
     <a href="{% url 'checkout' %}" class="btn btn-success" >CheckOut</a>
 </div>
 
