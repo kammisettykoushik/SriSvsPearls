@@ -77,7 +77,7 @@
         <ul class="pagination justify-content-center">
             {% if products.has_previous %}
             <li class="page-item">
-                <a class="page-link" href="?page={{ products.previous_page_number }}" aria-label="Previous">
+                <a class="page-link" href="?sort={{ sort_by }}&page={{ products.previous_page_number }}" aria-label="Previous">
                     <span aria-hidden="true">Previous</span>
                 </a>
             </li>
@@ -85,13 +85,13 @@
             {% for num in products.paginator.page_range %}
             {% if products.number == num %}
             <li class="page-item active"><span class="page-link">{{ num }}</span></li>
-            {% elif num > products.number|add:'-2' and num < products.number|add:'2' %}
-            <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+            {% elif num > products.number|add:'-5' and num < products.number|add:'5' %}
+            <li class="page-item"><a class="page-link" href="?sort={{ sort_by }}&page={{ num }}">{{ num }}</a></li>
                 {% endif %}
                 {% endfor %}
                 {% if products.has_next %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ products.next_page_number }}" aria-label="Next">
+                    <a class="page-link" href="?sort={{ sort_by }}&page={{ products.next_page_number }}" aria-label="Next">
                         <span aria-hidden="true">Next</span>
                     </a>
                 </li>

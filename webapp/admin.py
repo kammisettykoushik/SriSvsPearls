@@ -2,7 +2,9 @@ from django.contrib import admin
 from .models import Category, Product, Customer, Order, Profile, Testimonial
 from django.contrib.auth.models import User
 from payment.admin import *
-
+from import_export.admin import ExportMixin
+from import_export import resources
+from import_export.admin import ImportExportModelAdmin
 # Register your models here.
 
 
@@ -16,7 +18,8 @@ def mark_as_published(modeladmin, request, queryset):
     queryset.update(is_published=True)
 mark_as_published.short_description = "Mark selected products as published"
 
-class ProductAdmin(admin.ModelAdmin):
+
+class ProductAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     autocomplete_fields = ['category']
     list_display = ('name', 'category', 'created_at', 'price', 'is_published')
     list_filter = ('category', 'is_published', 'is_sale')
@@ -29,6 +32,8 @@ class ProductAdmin(admin.ModelAdmin):
                  ('Additional Information', { 'fields': ('is_published', 'quantity', 'is_sale', 'sale_price', 'created_at'),
                                               'classes': ('collapse',) }), )
     # inlines = [ProductInline]
+
+
 
 admin.site.register(Product, ProductAdmin)
 
@@ -45,7 +50,7 @@ class ProductInline(admin.TabularInline):
     verbose_name_plural = "Products"
     list_per_page = 10
 
-class CategoryAdmin(admin.ModelAdmin):
+class CategoryAdmin(ExportMixin,admin.ModelAdmin):
     inlines = [ProductInline]
     list_display = ('name',)
     search_fields = ('name',)
@@ -55,7 +60,7 @@ admin.site.register(Category, CategoryAdmin)
 
 
 
-class ProfileAdmin(admin.ModelAdmin):
+class ProfileAdmin(ExportMixin, admin.ModelAdmin):
     list_display = ('user', 'mobile_number')
 
 # combine profile info and user info
@@ -64,7 +69,7 @@ class ProfileInline(admin.StackedInline):
 
 
 #extend User model
-class UserAdmin(admin.ModelAdmin):
+class UserAdmin(ExportMixin,admin.ModelAdmin):
     model = User
     field = ["username", "first_name", "last_name", "email"]
     inlines = [ProfileInline, ShippingAddressInline, OrderInline]

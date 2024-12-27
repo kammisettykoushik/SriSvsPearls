@@ -2,65 +2,73 @@
 
 {% block content %}
 
-<!-- Header-->
+<!-- Header -->
 {% include 'mainheader.html' %}
 <br/>
 <div class="container">
-
-<div class="row">
-    <div class="col-md-6 offset-md-3">
-        <div class="card">
-            <div class="card-header">
-                Order Summary
-            </div>
-            <div class="card-body">
-                {% for product in cart_products %}
-                    {{ product.name }}
-                    {% if product.is_sale %}
-                    ₹{{ product.sale_price }}
-                    {% else %}
-                    ₹{{ product.price }}
-                    {% endif %}
-                    <br/>
-                    <small> Quantity:
-                        {% for key, value in quantities.items %}
-                            {% if key == product.id|slugify %}
-                                {{ value }}
-                            {% endif %}
-                        {% endfor %}
-                    </small>
-                    <br/><br/>
-                {% endfor %}
-                <strong>Total: ₹ {{ totals }} </strong>
-                <br/><br/>
-                <a href="{% url 'cart_summary' %}" class="btn btn-sm btn-outline-secondary">Update items</a>
+    <div class="row justify-content-center">
+        <!-- Order Summary Card -->
+        <div class="col-md-5 d-flex mb-4">
+            <div class="card shadow-lg w-100">
+                <div class="card-header text-center text-white" style="background-color: #e0a165;">
+                    <h5 class="m-0">Order Summary</h5>
+                </div>
+                <div class="card-body">
+                    {% for product in cart_products %}
+                        <div class="d-flex justify-content-between align-items-center border-bottom py-2">
+                            <span>{{ product.name }}</span>
+                            <span class="text-success">
+                                {% if product.is_sale %}
+                                ₹{{ product.sale_price }}
+                                {% else %}
+                                ₹{{ product.price }}
+                                {% endif %}
+                            </span>
+                        </div>
+                        <small class="d-block">Quantity:
+                            {% for key, value in quantities.items %}
+                                {% if key == product.id|slugify %}
+                                    {{ value }}
+                                {% endif %}
+                            {% endfor %}
+                        </small>
+                    {% endfor %}
+                    <hr>
+                    <strong class="d-block text-center">Total: ₹ {{ totals }}</strong>
+                    <div class="text-center mt-3">
+                        <a href="{% url 'cart_summary' %}" class="btn btn-sm btn-outline-secondary">Update items</a>
+                    </div>
+                </div>
             </div>
         </div>
-        <br/><br/>
 
-        <div class="card">
-            <div class="card-header">
-                Billing Address
-            </div>
-            <div class="card-body">
-                <form method="POST" action="{% url 'checkout' %}">
-                    {% csrf_token %}
-                    {{ billing_form.as_p }}
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="shipDifferentAddress" name="shipDifferentAddress" onclick="toggleShippingAddress()">
-                        <label class="form-check-label" for="shipDifferentAddress">Ship to a different address</label>
-                    </div>
-                    <div id="shippingAddress" style="display: none;">
-                        {{ shipping_form.as_p }}
-                    </div>
-                    <br/>
-                    <button type="submit" class="btn btn-secondary">Continue to Billing</button>
-                </form>
+        <!-- Billing Address Card -->
+        <div class="col-md-5 d-flex mb-4">
+            <div class="card shadow-lg w-100">
+                <div class="card-header text-center text-white" style="background-color: #e0a165;">
+                    <h5 class="m-0">Billing Address</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{% url 'checkout' %}">
+                        {% csrf_token %}
+                        {{ billing_form.as_p }}
+                        <div class="form-check mb-3">
+                            <input type="checkbox" class="form-check-input" id="shipDifferentAddress" name="shipDifferentAddress" onclick="toggleShippingAddress()">
+                            <label class="form-check-label" for="shipDifferentAddress">Ship to a different address</label>
+                        </div>
+                        <div id="shippingAddress" style="display: none;">
+                            {{ shipping_form.as_p }}
+                        </div>
+                        <div class="text-center mt-3">
+                            <button type="submit" class="btn btn-primary">Continue to Billing</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 </div>
-</div>
+
 
 <script>
     function toggleShippingAddress() {
@@ -85,5 +93,25 @@
         toggleShippingAddress();
     };
 </script>
+
+<style>
+    .card {
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+
+    .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-primary {
+        background: linear-gradient(45deg, #007bff, #0056b3);
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background: linear-gradient(45deg, #0056b3, #007bff);
+    }
+</style>
 
 {% endblock %}

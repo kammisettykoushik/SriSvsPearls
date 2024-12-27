@@ -23,6 +23,11 @@ def cart_add(request):
         #GET DATA
         product_id = int(request.POST.get('product_id'))
         product_qty = int(request.POST.get('product_qty'))
+
+        # Ensure the quantity is at least 1
+        if product_qty < 1:
+            product_qty = 1
+
         #look product in database
         product = get_object_or_404(Product, id=product_id)
 
@@ -56,6 +61,9 @@ def cart_update(request):
         product_id = int(request.POST.get('product_id'))
         product_qty = int(request.POST.get('product_qty'))
 
+        # Ensure the quantity is at least 1
+        if product_qty < 1:
+            product_qty = 1
 
         cart.update(product=product_id, quantity=product_qty)
 

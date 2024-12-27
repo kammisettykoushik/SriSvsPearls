@@ -7,75 +7,103 @@
 <br/>
 <div class="container mt-5">
 
-<div class="row">
-    <div class="col-12 col-md-8 offset-md-2">
-        <br /><br />
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8">
 
-        <!-- Order Summary -->
-        <div class="card">
-            <div class="card-header">
-                Order Summary
-            </div>
-            <div class="card-body">
-                {% for product in cart_products %}
-                    {{ product.name }}
-                    {% if product.is_sale %}
-                    ₹{{ product.sale_price }}
-                    {% else %}
-                    ₹{{ product.price }}
-                    {% endif %}
-                    <br/>
-                    <small> Quantity:
-                        {% for key, value in quantities.items %}
-                            {% if key == product.id|slugify %}
-                                {{ value }}
-                            {% endif %}
+            <div class="d-flex flex-column gap-4">
+
+                <!-- Order Summary Card -->
+                <div class="card">
+                    <div class="card-header" style="background-color: #e0a165;color: white;">
+                        Order Summary
+                    </div>
+                    <div class="card-body">
+                        {% for product in cart_products %}
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <p style="color: #e0a165;">{{ product.name }}</p>
+                                    {% if product.is_sale %}
+                                    <div class="text-success">₹{{ product.sale_price }}</div>
+                                    {% else %}
+                                    <div>₹{{ product.price }}</div>
+                                    {% endif %}
+                                    <small> Quantity:
+                                        {% for key, value in quantities.items %}
+                                            {% if key == product.id|slugify %}
+                                                {{ value }}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </small>
+                                </div>
+                            </div>
+                            <hr/>
                         {% endfor %}
-                    </small>
-                    <br/><br/>
-                {% endfor %}
-                <strong>Total: ₹ {{ totals }} </strong>
-                <br/><br/>
-                <a href="{% url 'cart_summary' %}" class="btn btn-sm btn-outline-secondary">Update items</a>
-            </div>
-        </div>
-        <br/>
+                        <div class="fw-bold">Total: ₹ {{ totals }} </div>
+                        <br/>
+                        <a href="{% url 'cart_summary' %}" class="btn btn-sm" style="background-color: #e0a165;color: white;">Update items</a>
+                    </div>
+                </div>
 
-        <!-- Shipping Information -->
-        <div class="card">
-            <div class="card-header">
-                Shipping Here:
-            </div>
-            <div class="card-body">
-                Name: {{ shipping_info.shipping_full_name }}<br/>
-                Email: {{ shipping_info.shipping_email }}<br/>
-                Address 1: {{ shipping_info.shipping_address1 }}<br/>
-                Address 2: {{ shipping_info.shipping_address2 }}<br/>
-                City: {{ shipping_info.shipping_city }}<br/>
-                State: {{ shipping_info.shipping_state }}<br/>
-                Zipcode: {{ shipping_info.shipping_zipcode }}<br/>
-                Country: {{ shipping_info.shipping_country }}<br/>
-                <br/>
-                <a href="{% url 'checkout' %}" class="btn btn-outline-secondary">Update Shipping</a>
-            </div>
-        </div>
-        <br/>
+                <!-- Shipping Information Card -->
+                <div class="card">
+                    <div class="card-header" style="background-color: #e0a165;color: white;">
+                        Shipping Information
+                    </div>
+                    <div class="card-body">
+                        <p>Name: {{ shipping_info.shipping_full_name }}</p>
+                        <p>Email: {{ shipping_info.shipping_email }}</p>
+                        <p>Address 1: {{ shipping_info.shipping_address1 }}</p>
+                        <p>Address 2: {{ shipping_info.shipping_address2 }}</p>
+                        <p>City: {{ shipping_info.shipping_city }}</p>
+                        <p>State: {{ shipping_info.shipping_state }}</p>
+                        <p>Zipcode: {{ shipping_info.shipping_zipcode }}</p>
+                        <p>Country: {{ shipping_info.shipping_country }}</p>
+                        <br/>
+                        <a href="{% url 'checkout' %}" class="btn" style="background-color: #e0a165;color: white;">Update Shipping</a>
+                    </div>
+                </div>
 
-        <!-- Payment and Cancel Buttons -->
-        <div class="card">
-            <div class="card-header">
-                Payment Info:
-            </div>
-            <div class="card-body">
-                <form method="POST" action="{% url 'process_order' %}">
-                    {% csrf_token %}
-                    <button type="submit" name="pay_now" class="btn btn-primary w-50 w-md-auto">Pay Now</button>
-                    <button type="submit" name="cancel" class="btn btn-secondary w-50 w-md-auto mt-2">Cancel</button>
-                </form>
+                <!-- Payment Info Card -->
+                <div class="card">
+                    <div class="card-header">
+                        Enquiry Info
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" action="{% url 'process_order' %}">
+                            {% csrf_token %}
+                            <div class="d-flex flex-column align-items-center gap-2">
+                                <button type="submit" name="pay_now" class="btn btn-secondary w-50 w-md-auto mt-2">
+                                    Click to Send Message
+                                </button>
+<!--<button type="submit" onclick="sendCartToWhatsApp()" name="pay_now" class="btn btn-secondary w-50 w-md-auto mt-2">-->
+<!--                                    Pay Now-->
+<!--                                </button>-->
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
+
 </div>
-</div>
+
+<!--<script>-->
+<!--  function sendCartToWhatsApp() {-->
+<!--  var cartData = "Greetings! My shopping cart details are as follows:\n\n";-->
+<!--  // Loop through the regular cart items-->
+<!--  {% for item in order_items %}-->
+<!--cartData += "Product Name: {{ item.product.name }}\n";-->
+<!--cartData += "Quantity: {{ item.quantity }}\n\n";-->
+<!--cartData += "Price: ₹{{ item.price }}\n";-->
+<!--  {% endfor %}-->
+
+<!--  var whatsappURL = "https://wa.me/+919100177915?text=" + encodeURIComponent(cartData);-->
+<!--    window.open(whatsappURL, '_blank');-->
+<!--}-->
+
+<!--</script>-->
+
 
 {% endblock %}

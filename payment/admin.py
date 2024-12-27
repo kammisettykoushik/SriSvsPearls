@@ -1,12 +1,15 @@
 from django.contrib import admin
 from .models import *
 from django.contrib.auth.models import User
+from import_export.admin import ExportMixin
+from import_export import resources
+from import_export.admin import ImportExportModelAdmin
 # Register your models here.
 
 admin.site.register(Order)
 admin.site.register(OrderItem)
 
-class ShippingAddressAdmin(admin.ModelAdmin):
+class ShippingAddressAdmin(ExportMixin,admin.ModelAdmin):
     list_display = ('user', 'shipping_full_name', 'shipping_email', 'shipping_address1', 'shipping_city', 'shipping_state', 'shipping_zipcode', 'shipping_country')
     search_fields = ('shipping_full_name', 'shipping_email', 'shipping_address1', 'shipping_city', 'shipping_state', 'shipping_zipcode', 'shipping_country')
     list_filter = ('shipping_full_name', 'shipping_city', 'shipping_state')
@@ -29,7 +32,7 @@ class OrderInline(admin.StackedInline):
     extra = 0
 
 # Extend our Order Model
-class OrderAdmin(admin.ModelAdmin):
+class OrderAdmin(ExportMixin, admin.ModelAdmin):
     model = Order
     readonly_fields = ["date_ordered"]
     fields = ["user", "full_name", "email", "shipping_address", "amount_paid", "date_ordered", "shipped", "date_shipped"]

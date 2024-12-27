@@ -13,6 +13,7 @@ from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from reportlab.lib import colors
 from reportlab.lib.utils import ImageReader
+from urllib.parse import quote
 #from payment.razorpay_integration import initiate_payment
 # Create your views here.
 def payment_view(request):
@@ -172,9 +173,12 @@ def generate_invoice(request, order_id):
     })
 
 
+
+
 def process_order(request):
     if request.method == 'POST':
         print("POST request received")
+
         # Get cart Info
         cart = Cart(request)
         cart_products = cart.get_prods
@@ -188,77 +192,37 @@ def process_order(request):
         # Gather Order Info
         full_name = shipping_info['shipping_full_name']
         email = shipping_info['shipping_email']
-        # Create Shipping Address from session info
         shipping_address = f"{shipping_info['shipping_address1']}\n{shipping_info['shipping_address2']}\n{shipping_info['shipping_city']}\n{shipping_info['shipping_zipcode']}\n{shipping_info['shipping_country']}"
         amount_paid = totals
 
-        if request.user.is_authenticated:
-            print("User is authenticated")
-            # Logged in
-            user = request.user
-            # Create Order
-            create_order = Order(user=user, full_name= full_name, email=email, shipping_address=shipping_address, amount_paid=amount_paid)
-            create_order.save()
+        # Build the WhatsApp message with professional UI
+        message = f"*Order Inquiry* \n\n"
 
-            # Add the order items
-            # Get the order ID
-            order_id = create_order.pk
+        message += f"👤 *Customer Details*:\n"
+        message += f"• *Full Name*: {full_name}\n"
+        message += f"• *Email*: {email}\n\n"
 
-            # Get product Info
-            for product in cart_products():
-                # Get product id
-                product_id = product.id
-                # Get product price
-                if product.is_sale:
-                    price = product.sale_price
-                else:
-                    price = product.price
+        message += f"🏠 *Shipping Address*:\n"
+        message += f"{shipping_address}\n\n"
 
-                # Get quantity
-                for key, value in quantities().items():
-                    if int(key) == product.id:
-                        # Create order item
-                        create_order_item = OrderItem(order_id=order_id, product_id=product_id, user=user, quantity=value, price=price)
-                        create_order_item.save()
+        message += f"💲 *Total Amount*: ₹{amount_paid}\n\n"
 
-            # Delete the cart
-            for key in list(request.session.keys()):
-                if key == "session_key":
-                    # Delete the key
-                    del request.session[key]
+        message += f"📦 *Order Details*:\n"
 
-            messages.success(request, "Order Placed!")
-            return redirect('generate_invoice', order_id=order_id)
-        else:
-            print("User is not authenticated")
-            # Not logged in
-            # Create order
-            create_order = Order(full_name= full_name, email=email, shipping_address=shipping_address, amount_paid=amount_paid)
-            create_order.save()
+        for product in cart_products():
+            product_name = product.name
+            product_quantity = quantities().get(str(product.id), 1)  # Default to 1 if not found
+            product_price = product.sale_price if product.is_sale else product.price
+            message += f"• *{product_name}* x {product_quantity} - ₹{product_price} each\n"
 
-            # Add the order items
-            # Get the order ID
-            order_id = create_order.pk
+        # URL encode the message for WhatsApp
+        encoded_message = quote(message)
 
-            # Get product Info
-            for product in cart_products():
-                # Get product id
-                product_id = product.id
-                # Get product price
-                if product.is_sale:
-                    price = product.sale_price
-                else:
-                    price = product.price
+        # Create the WhatsApp URL
+        whatsapp_url = f"https://wa.me/+919100177915?text={encoded_message}"
 
-                # Get quantity
-                for key, value in quantities().items():
-                    if int(key) == product.id:
-                        # Create order item
-                        create_order_item = OrderItem(order_id=order_id, product_id=product_id, quantity=value, price=price)
-                        create_order_item.save()
-
-            messages.success(request, "Order Placed!")
-            return redirect('generate_invoice', order_id=order_id)
+        # Redirect to WhatsApp
+        return redirect(whatsapp_url)
 
     else:
         print("Access Denied: Invalid request method")

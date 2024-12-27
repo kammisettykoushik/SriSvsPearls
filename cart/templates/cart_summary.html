@@ -1,118 +1,113 @@
 {% extends 'base.html' %}
 
-       {% block content %}
+{% block content %}
 
-        <!-- Header-->
+
 {% include 'mainheader.html' %}
 
-        <header class="bg-dark py-1">
-            <div class="container px-4  ">
-                <div class="text-center text-white">
-                    <h1 style="color: #aaaaaa"; class="display-4 fw-bolder">Shopping Cart</h1>
-                </div>
-            </div>
-        </header>
+
+<header class="py-1"
+    style="background-color:#e0a165;margin-top:-10px;font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
+    <div class="container px-4">
+        <div class="text-center text-white">
+            <h1 style="color: white;" class="display-10 fw-bolder">Shopping Cart</h1>
+        </div>
+    </div>
+</header>
 
 <div class="container">
-    {% if cart_products %}
+  {% if cart_products %}
     {% for product in cart_products %}
+     <div class="row mt-4">
+  <div class="col-12 col-md-6">
+    <div class="card shadow-sm d-flex" style="height:260px">
+      <div class="card-image" style="width: 100%; height:0; padding-bottom: 100%; position: relative;">
+        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid"
+          style="position: absolute; width: 100%; height:200px; object-fit:contain;">
+      </div>
 
+      <div class="card-body d-flex flex-column" style="padding: 10px;">
+        <h6 class="card-title fw-bold text-truncate" style="color: #e0a165; font-size: 18px;">{{ product.name }}</h6>
+        <h6 class="small fw-bold" style="font-size: 14px; margin-top: 5px;">Description</h6>
+        <p class="small text-muted mb-2" style="font-size: 12px;">{{ product.description }}</p>
 
-<div class="container mt-4">
-    <div class="card-container">
-      <!-- Product Card -->
-      <div class="card shadow-sm">
-        <!-- Image Section -->
-        <div class="card-image">
-          <img
-            src="{{ product.image.url }}"
-            alt="{{ product.name }}"
-            class="img-fluid">
+        <div class="mb-2">
+          {% if product.is_sale %}
+            <span class="text-danger fw-bold" style="font-size: 14px;">₹{{ product.sale_price }}</span>
+            <strike class="text-muted" style="font-size: 12px;">₹{{ product.price }}</strike>
+          {% else %}
+            <span class="fw-bold" style="font-size: 14px;">₹{{ product.price }}</span>
+          {% endif %}
+        </div>
+        <div class="d-flex align-items-center mb-2">
+          <label class="me-2 small" style="font-size: 12px;"><b>Quantity:</b></label>
+          <input type="number" min="1" max="{{ product.stock }}"
+            value="{% for key, value in quantities.items %}{% if key == product.id|slugify %}{{ value }}{% endif %}{% endfor %}"
+            class="form-control form-control-sm text-center update-cart" data-index="{{ product.id }}"
+            id="quantity{{ product.id }}" style="width: 100px; height: 25px; font-size: 12px;">
         </div>
 
-        <!-- Content Section -->
-        <div class="card-body">
-          <!-- Product Name -->
-          <h6 class="card-title fw-bold text-truncate" style="color: #e0a165;font-size: 25px;">{{ product.name }}</h6>
-
-          <!-- Sold By -->
-          <!-- <p class="small text-muted mb-1">Sold by: <strong>{{ seller_name }}</strong></p> -->
-          <p class="small text-muted mb-1">Sold by: <strong>SVS pearls & Immetation jewellery</strong></p>
-
-          <!-- Price and Discount -->
-          <div class="mb-2">
-            {% if product.is_sale %}
-              <span class="text-danger fw-bold fs-5">₹{{ product.sale_price }}</span>
-              <strike class="text-muted small">₹{{ product.price }}</strike>
-            {% else %}
-              <span class="fw-bold fs-5">₹{{ product.price }}</span>
-            {% endif %}
-          </div>
-
-          <!-- Quantity Input -->
-          <div class="d-flex align-items-center mb-2">
-            <label class="me-2 small text-muted">Qty:</label>
-            <input type="number" min="1" max="{{ product.stock }}" value="{% for key, value in quantities.items %}{% if key == product.id|slugify %}{{ value }}{% endif %}{% endfor %}"
-               class="form-control form-control-sm text-center update-cart"
-               data-index="{{ product.id }}" id="quantity{{ product.id }}"
-            style="width: 60px;">
-          </div>
-
-          <!-- Return and Delivery -->
-          <p class="small text-muted mb-1" >14 days <strong style="color: rgb(45, 43, 43);">return available</strong></p>
-          <p class="small text-muted mb-1">Delivered By <strong style="color: rgb(59, 57, 57);">2-3 Days</strong></p>
-
-          <div class="d-flex mt-3" style="gap:10px;">
-            <a href="{% url 'index' %}" class="btn btn-sm btn-outline-primary">Home</a>
-            <a href="{% url 'all_products' %}" class="btn btn-sm btn-success">Add More</a>
-            <button type="button" data-index="{{ product.id }}" class="btn btn-sm btn-danger delete-product">Remove</button>
-          </div>
+        <div class="d-flex mb-2" style="width: 100%; max-width: 200px;">
+          <button onclick="window.history.back();" type="button" class="btn btn-sm text-white w-100"
+            style="background-color: #900C0A; font-size: 12px;">
+            Add More <i class="bi bi-arrow-left-circle-fill"></i>
+          </button>
+        </div>
+        <div class="d-flex mt-2 justify-content-between" style="gap: 10px;">
+          <a href="{% url 'index' %}" class="btn btn-sm"
+            style="font-size: 12px; padding: 2px 8px; width: 90px; background-color: gray; color: white;">
+            <i class="bi bi-house-door-fill"></i> Home
+          </a>
+          <button type="button" data-index="{{ product.id }}" class="btn btn-sm delete-product"
+            style="font-size: 12px; padding: 2px 8px; width: 90px; background-color: gray; color: white;">
+            <i class="bi bi-trash-fill"></i> Remove
+          </button>
         </div>
       </div>
     </div>
   </div>
-
-    {% endfor %}
-<div align="right">
-    <h3 class="fw-bolder text-danger" >Total: ₹{{ totals }}</h3>
-    <a href="{% url 'checkout' %}" class="btn btn-success" >CheckOut</a>
 </div>
 
-    {% else %}
+    {% endfor %}
 
-<p class="text-center">There's nothing in your cart</p>
-
-{% endif %}
+    <div align="right" class="mt-4">
+      <h3 class="fw-bolder text-danger">Total: ₹{{ totals }}</h3>
+      <a href="{% url 'checkout' %}" class="btn btn-success">Proceed to CheckOut</a>
     </div>
+  {% else %}
+    <p class="text-center">There's nothing in your cart</p>
+  {% endif %}
+</div>
+
 
 
 
 <script>
-    //update cart
-  $(document).on('change', '.update-cart', function (e){
+  //update cart
+  $(document).on('change', '.update-cart', function (e) {
     e.preventDefault();
     //grab the product id
-      var productid = $(this).data('index');
-      // Get the selected quantity value
-      var productQty = $('#quantity' + productid).val()
-  //   var productQty = $('#select' + productid).find('option:selected').val();
+    var productid = $(this).data('index');
+    // Get the selected quantity value
+    var productQty = $('#quantity' + productid).val()
+    //   var productQty = $('#select' + productid).find('option:selected').val();
     //ajax is used to send data to the backend without refreshing the page
     $.ajax({
-        type: 'POST',
-        url: '{% url "cart_update" %}',
-        data: {
-            product_id: productid,
-            product_qty: productQty,
+      type: 'POST',
+      url: '{% url "cart_update" %}',
+      data: {
+        product_id: productid,
+        product_qty: productQty,
         csrfmiddlewaretoken: '{{ csrf_token }}',
         action: 'post'
       },
-      success: function(json){
+      success: function (json) {
         //console.log(json)
         //document.getElementById("cart_quantity").
-            //    textContent = json.qty
-          location.reload();
+        //    textContent = json.qty
+        location.reload();
       },
-      error: function(xhr, errmsg, err){
+      error: function (xhr, errmsg, err) {
         console.error(errmsg);
         alert('There was an error updating the cart.');
       }
@@ -124,27 +119,27 @@
   });
 
   //delete cart
-  $(document).on('click', '.delete-product', function (e){
+  $(document).on('click', '.delete-product', function (e) {
     e.preventDefault();
     //grab the product id
 
-      // Get the selected quantity value
+    // Get the selected quantity value
     //ajax is used to send data to the backend without refreshing the page
     $.ajax({
-        type: 'POST',
-        url: '{% url "cart_delete" %}',
-        data: {
-            product_id: $(this).data('index'),
+      type: 'POST',
+      url: '{% url "cart_delete" %}',
+      data: {
+        product_id: $(this).data('index'),
         csrfmiddlewaretoken: '{{ csrf_token }}',
         action: 'post'
       },
-      success: function(json){
+      success: function (json) {
         //console.log(json)
         //document.getElementById("cart_quantity").
-            //    textContent = json.qty
-          location.reload();
+        //    textContent = json.qty
+        location.reload();
       },
-      error: function(xhr, errmsg, err){
+      error: function (xhr, errmsg, err) {
         console.error(errmsg);
         alert('There was an error updating the cart.');
       }
@@ -160,91 +155,91 @@
 
 
 
-<style>
-  /* Container Styling */
-  .container {
-    margin: auto;
-  }
 
-  /* Card Container */
-  .card-container {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  /* Card Styling */
-  .card {
-    display: flex;
-    flex-direction: row;
-    border-radius: 8px;
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    background-color: #fff;
-    padding: 8px;
-  }
-
-  .card:hover {
-    transform: scale(1.02);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
-
-  /* Image Section */
-  .card-image {
-    width: 30%; /* Reduced width for smaller cards */
-  }
-
-  .card-image img {
-    width: 100%;
-    height: 300px;
-    object-fit: contain;
-    border-radius: 8px 0 0 8px;
-  }
-
-  /* Card Body */
-  .card-body {
-    width: 70%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 12px;
-  }
-
-  /* Buttons */
-  .btn {
-    font-size: 0.85rem;
-  }
-
-  /* Responsive Adjustments */
-  @media (max-width: 768px) {
-    .card {
+  <style>
+    .container {
+      margin: auto;
+    }
+    .card-container {
+      display: flex;
       flex-direction: column;
+      gap: 16px;
     }
 
+    /* Card Styling */
+    .card {
+      display: flex;
+      flex-direction: row;
+      border-radius: 8px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      background-color: #fff;
+      padding: 8px;
+    }
+
+    .card:hover {
+      transform: scale(1.02);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Image Section */
     .card-image {
-      width: 100%;
-      height: 200px; /* Adjust image height for mobile */
+      width: 30%;
+      /* Reduced width for smaller cards */
     }
 
+    .card-image img {
+      width: 100%;
+      height: 300px;
+      object-fit: contain;
+      border-radius: 8px 0 0 8px;
+    }
+
+    /* Card Body */
     .card-body {
-      width: 100%;
-    }
-  }
-
-  @media (max-width: 576px) {
-    .card {
+      width: 70%;
+      display: flex;
       flex-direction: column;
-      padding: 8px;
+      justify-content: space-between;
+      padding: 12px;
     }
 
-    .card-body {
-      padding: 8px;
+    /* Buttons */
+    .btn {
+      font-size: 0.85rem;
     }
 
-    .card-title {
-      font-size: 1rem;
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .card {
+        flex-direction: column;
+      }
+
+      .card-image {
+        width: 100%;
+        height: 200px;
+        /* Adjust image height for mobile */
+      }
+
+      .card-body {
+        width: 100%;
+      }
     }
-  }
+
+    @media (max-width: 576px) {
+      .card {
+        flex-direction: column;
+        padding: 8px;
+      }
+
+      .card-body {
+        padding: 8px;
+      }
+
+      .card-title {
+        font-size: 1rem;
+      }
+    }
   </style>
 
-{% endblock %}
+  {% endblock %}

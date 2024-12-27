@@ -79,10 +79,10 @@
               alt="Profile Picture" class="rounded-circle" width="40" height="40">
           </a>
           <ul class="dropdown-menu" aria-labelledby="profileDropdown">
-            <li><a class="dropdown-item" href="{% url 'update_user' %}">{{ user }} Profile</a></li>
-            <li><a class="dropdown-item" href="{% url 'update_info' %}">{{ user }} Address</a></li>
+            <li><a class="dropdown-item" href="{% url 'update_user' %}"><i class="bi bi-person-lines-fill text-success"></i> Your Profile</a></li>
+            <li><a class="dropdown-item" href="{% url 'update_info' %}"><i class="bi bi-card-checklist text-primary"></i> Your Address</a></li>
 
-            <li><a class="dropdown-item" href="{% url 'orders_summary' %}">Your Orders</a></li>
+            <li><a class="dropdown-item" href="{% url 'orders_summary' %}"><i class="bi bi-receipt-cutoff text-warning"></i> Orders <i class="bi bi-caret-right-fill"></i></a></li>
 
           </ul>
         </div>
@@ -93,7 +93,7 @@
       <div class="d-flex align-items-center ms-3">
         <a href="{% url 'cart_summary' %}" class="btn me-2 d-flex flex-column align-items-center">
           <!-- Cart Icon with Badge -->
-          <i class="bi-cart mb-1 position-relative" style="font-size: 20px;color: white;">
+          <i class="bi-cart-fill mb-1 position-relative" style="font-size: 20px;color: white;">
             <span
               class="badge bg-danger text-white ms-1 rounded-pill position-absolute top-0 start-100 translate-middle"
               id="cart_quantity" style="font-size: 10px;">

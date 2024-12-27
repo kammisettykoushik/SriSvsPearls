@@ -3,142 +3,137 @@
 {% block content %}
 <!-- Header-->
 {% include 'mainheader.html' %}
-    <div class="container mt-5">
-        <button onclick="window.history.back();" class="btn btn-outline-secondary font-weight-bold">
-            Back
-        </button>
-
-        <h2 class="text-center text-primary mb-5">Order Details for Order #{{ order.id }}</h2>
-
+<header class="py-1"
+    style="background-color:#e0a165;margin-top:-10px;font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
+    <div class="container px-4">
+        <div class="text-center text-white">
+            <h1 style="color: white;" class="display-10 fw-bolder">Order Details:-</h1>
+        </div>
+    </div>
+</header>
+<div class="d-flex justify-content-start mb-3">
+        <button onclick="window.history.back();" class="btn btn-outline-secondary font-weight-bold">Back</button>
+    </div>
+<div class="container mt-4">
+    <div class="row">
         <!-- Shipping Information Card -->
-        <div class="card custom-card shadow-lg border-0 rounded-lg mb-4">
-            <div class="card-header bg-gradient text-white font-weight-bold">
-                Shipping Information
-            </div>
-            <div class="card-body">
-                <p><strong>Name:</strong> {{ order.full_name }}</p>
-                <p><strong>Email:</strong> {{ order.email }}</p>
-                <p><strong>Address:</strong></p>
-                <p>{{ order.shipping_address }}</p>
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card custom-card shadow-lg border-0 rounded-lg">
+                <div class="card-header bg-gradient text-white font-weight-bold">Shipping Information</div>
+                <div class="card-body">
+                    <p><strong>Name:</strong> {{ order.full_name }}</p>
+                    <p><strong>Email:</strong> {{ order.email }}</p>
+                    <p><strong>Address:</strong></p>
+                    <p>{{ order.shipping_address }}</p>
+                </div>
             </div>
         </div>
 
         <!-- Order Items Card -->
-        <div class="card custom-card shadow-lg border-0 rounded-lg mb-4">
-            <div class="card-header bg-gradient text-white font-weight-bold">
-                Order Items
-            </div>
-            <div class="card-body">
-                <table class="table table-bordered table-hover">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th>Product</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th>Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for item in order_items %}
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card custom-card shadow-lg border-0 rounded-lg">
+                <div class="card-header bg-gradient text-white font-weight-bold">Order Items</div>
+                <div class="card-body">
+                    <table class="table table-bordered table-hover">
+                        <thead class="thead-dark">
                             <tr>
-                                <td>{{ item.product.name }}</td>
-                                <td>${{ item.price }}</td>
-                                <td>{{ item.quantity }}</td>
-                                <td>${{ item.total_price }}</td>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
                             </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {% for item in order_items %}
+                                <tr>
+                                    <td>{{ item.product.name }}</td>
+                                    <td>₹{{ item.price }}</td>
+                                    <td>{{ item.quantity }}</td>
+                                    <td>₹{{ item.total_price }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
         <!-- Order Summary Card -->
-        <div class="card custom-card shadow-lg border-0 rounded-lg mb-4">
-            <div class="card-header bg-gradient text-white font-weight-bold">
-                Order Summary
+        <div class="col-lg-4 col-md-12 mb-4">
+            <div class="card custom-card shadow-lg border-0 rounded-lg">
+                <div class="card-header bg-gradient text-white font-weight-bold">Order Summary</div>
+                <div class="card-body">
+                    <p><strong>Total Amount Paid:</strong> ₹{{ order.amount_paid }}</p>
+                    <p><strong>Order Status:</strong>
+                        {% if order.status == 'P' %} Pending
+                        {% elif order.status == 'S' %} Shipped
+                        {% elif order.status == 'D' %} Delivered
+                        {% elif order.status == 'C' %} Canceled
+                        {% endif %}
+                    </p>
+                </div>
             </div>
-            <div class="card-body">
-                <p><strong>Total Amount Paid:</strong> ${{ order.amount_paid }}</p>
-                <p><strong>Order Status:</strong>
-                    {% if order.status == 'P' %} Pending
-                    {% elif order.status == 'S' %} Shipped
-                    {% elif order.status == 'D' %} Delivered
-                    {% elif order.status == 'C' %} Canceled
-                    {% endif %}
-                </p>
-            </div>
-        </div>
-
-        <!-- Back to Home Button -->
-        <div class="text-center mt-4">
-            <a href="{% url 'orders_summary' %}" class="btn btn-outline-primary font-weight-bold">
-                Back to Home
-            </a>
         </div>
     </div>
 
+</div>
+
 <style>
-    /* Custom card hover effect */
-    .custom-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    }
-
-    /* Gradient background for the card headers */
-    .card-header.bg-gradient {
-        background: linear-gradient(135deg, #007bff, #6610f2);
-        border-radius: 12px 12px 0 0;
-    }
-
-    /* Styling the table rows for hover effects */
-    .table-hover tbody tr:hover {
-        background-color: #f1f1f1;
-        cursor: pointer;
-    }
-
-    /* Custom styling for the Back to Home button */
-    .btn-outline-primary {
-        font-size: 1.1rem;
-        padding: 0.6rem 1.5rem;
-        border-radius: 30px;
-    }
-
-    .btn-outline-primary:hover {
-        background-color: #007bff;
-        color: #fff;
-        box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
-    }
-
-    /* Custom styling for the Back Button */
+    /* Back Button Styling */
     .btn-outline-secondary {
         font-size: 1rem;
         padding: 0.5rem 1rem;
         border-radius: 25px;
         border-color: #6c757d;
         color: #6c757d;
+        margin-top: 10px;
     }
-
     .btn-outline-secondary:hover {
         background-color: #6c757d;
         color: white;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     }
 
-    /* Table customizations for a clean look */
-    .table-bordered th,
-    .table-bordered td {
-        border: 1px solid #e0e0e0;
+    /* Card Styling */
+    .custom-card {
+        height: 100%;
+    }
+    .custom-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    .card-header.bg-gradient {
+        background: linear-gradient(135deg, #007bff, #6610f2);
+        border-radius: 12px 12px 0 0;
     }
 
+    /* Table Styling */
+    .table-hover tbody tr:hover {
+        background-color: #f1f1f1;
+        cursor: pointer;
+    }
+    .table-bordered th, .table-bordered td {
+        border: 1px solid #e0e0e0;
+    }
     .table thead th {
-        background-color: #343a40;
+        background-color:#e0a165;
         color: white;
         font-weight: bold;
     }
-
     .table tbody td {
         vertical-align: middle;
     }
-</style>
 
+    /* Back to Home Button Styling */
+    .btn-outline-primary {
+        font-size: 1.1rem;
+        padding: 0.6rem 1.5rem;
+        border-radius: 30px;
+    }
+    .btn-outline-primary:hover {
+        background-color: #007bff;
+        color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+    }
+</style>
 {% endblock %}

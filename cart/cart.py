@@ -41,6 +41,9 @@ class Cart():
             current_user.update(old_cart=str(carty))
 
     def add(self, product, quantity=1):
+        # Ensure the quantity is at least 1
+        if int(quantity) < 1:
+            quantity = 1
         product_id = str(product.id)
         product_qty = str(quantity)
 

@@ -61,7 +61,8 @@ def search(request):
             messages.error(request, "That product does not exist. Please try again.")
             return render(request, 'search.html', {'query': query})
     else:
-        return render(request, 'search.html', {})
+        messages.error(request, "No Input found")
+        return redirect('index')
 
 
 def update_info(request):
@@ -209,7 +210,8 @@ def index(request):
 
 
 def all_products(request):
-    products = Product.objects.order_by('name').filter(is_published=True)
+    sort_by = request.GET.get('sort', 'created_at')
+    products = Product.objects.order_by(sort_by).filter(is_published=True)
     paginator = Paginator(products, 8)
     page_number = request.GET.get('page')
     try:
@@ -220,7 +222,7 @@ def all_products(request):
     except EmptyPage:
         # If page is out of range (e.g., 9999), deliver last page of results.
         products = paginator.page(paginator.num_pages)
-    return render(request, 'category.html', {'products': products})
+    return render(request, 'category.html', {'products': products, 'sort_by': sort_by})
 
 
 def product(request, pk):

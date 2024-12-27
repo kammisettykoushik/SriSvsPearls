@@ -3,72 +3,105 @@
 {% block content %}
 <!-- Header-->
 {% include 'mainheader.html' %}
-    <div class="container mt-5">
-        <h2 class="text-center text-primary mb-5">Your Orders</h2>
+<header class="py-1"
+    style="background-color:#e0a165;margin-top:-10px;font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
+    <div class="container px-4">
+        <div class="text-center text-white">
+            <h1 style="color: white;" class="display-10 fw-bolder">Your Orders</h1>
+        </div>
+    </div>
+</header>
+<div class="container mt-5">
 
-        {% if orders %}
-            <div class="row">
-                {% for order in orders %}
-                    <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
-                        <div class="card custom-card shadow-lg border-0 rounded-lg">
-                            <div class="card-header d-flex justify-content-between align-items-center bg-gradient text-white">
-                                <span class="font-weight-bold">Order #{{ order.id }}</span>
-                                <a href="{% url 'order_details' order.id %}" class="btn btn-light btn-sm font-weight-bold">View Details</a>
+    {% if orders %}
+    <div class="row">
+        {% for order in orders %}
+            <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                <div class="card custom-card shadow-lg border-0 rounded-lg">
+                    <div class="d-flex justify-content-between align-items-center bg-gradient text-white">
+                        <span class="font-weight-bold">Order #{{ order.id }}</span>
+                    </div>
+                    <div class="card-body">
+                        <!-- Simple Carousel for Order Items -->
+                        <div id="carousel-{{ order.id }}" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                                {% for order_item in order.orderitem_set.all %}
+                                    <div class="carousel-item {% if forloop.first %} active {% endif %}">
+                                        <div class="row">
+                                            <div class="col-4 text-center">
+                                                <!-- Product Image -->
+                                                <img src="{{ order_item.product.image.url }}" alt="Product Image" class="img-fluid rounded border" style="width: 100px; height: 100px; object-fit: cover;">
+                                            </div>
+                                            <div class="col-8">
+                                                <!-- Product Details -->
+                                                <h5 class="card-title text-dark">{{ order_item.product.name }}</h5>
+                                                <p><strong>Quantity:</strong> {{ order_item.quantity }}</p>
+                                                <p><strong>Price:</strong> ₹{{ order_item.price }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
                             </div>
-                            <div class="card-body">
-                                <h5 class="card-title text-dark">{{ order.full_name }}</h5>
-                                <p><strong>Email:</strong> {{ order.email }}</p>
-                                <p><strong>Shipping Address:</strong> {{ order.shipping_address }}</p>
-                            </div>
-                            <div class="card-footer bg-transparent text-muted text-center">
-                                {% if order.status == 'P' %}
-                                    <span class="badge status-badge pending">Pending</span>
-                                {% elif order.status == 'S' %}
-                                    <span class="badge status-badge shipped">Shipped</span>
-                                {% elif order.status == 'D' %}
-                                    <span class="badge status-badge delivered">Delivered</span>
-                                {% elif order.status == 'C' %}
-                                    <span class="badge status-badge canceled">Canceled</span>
-                                {% endif %}
-                            </div>
+                            <!-- Carousel Controls -->
+                            {% if order.orderitem_set.count > 1 %}
+                                <!-- Show controls only if there are multiple items -->
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carousel-{{ order.id }}" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carousel-{{ order.id }}" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            {% endif %}
                         </div>
                     </div>
-                {% endfor %}
+                    <div class="card-footer bg-transparent text-muted text-center d-flex justify-content-between align-items-center">
+                        <!-- Order Status -->
+                        <div>
+                            {% if order.status == 'P' %}
+                                <span class="badge status-badge pending">Pending</span>
+                            {% elif order.status == 'S' %}
+                                <span class="badge status-badge shipped">Shipped</span>
+                            {% elif order.status == 'D' %}
+                                <span class="badge status-badge delivered">Delivered</span>
+                            {% elif order.status == 'C' %}
+                                <span class="badge status-badge canceled">Canceled</span>
+                            {% endif %}
+                        </div>
+
+                        <!-- View Order Details Button -->
+                        <a href="{% url 'order_details' order.id %}" class="btn btn-sm font-weight-bold" style="border: 2px solid skyblue;color: skyblue;">View Details</a>
+                    </div>
+                </div>
             </div>
-        {% else %}
-            <p class="text-center text-muted">No orders found.</p>
-        {% endif %}
+        {% endfor %}
     </div>
+    {% else %}
+        <p class="text-center text-muted">No orders found.</p>
+    {% endif %}
+</div>
 
 <style>
-    /* Global Styling for Containers and Text */
-    .container {
-        max-width: 1200px;
+    /* Adjusting the Product Image size */
+    .img-fluid {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
     }
 
-    .text-primary {
-        color: #007bff;
-    }
-
-    /* Custom card styling */
+    /* Custom Card Styling */
     .custom-card {
         border-radius: 12px;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
         overflow: hidden;
+        margin-bottom: 20px;
     }
 
-    .custom-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    .card-body {
+        padding: 10px;
     }
 
-    /* Gradient background for card headers */
-    .card-header.bg-gradient {
-        background: linear-gradient(135deg, #007bff, #6610f2);
-        border-radius: 12px 12px 0 0;
-    }
-
-    /* Styling the status badge */
+    /* Order Status Badge */
     .status-badge {
         padding: 6px 12px;
         border-radius: 20px;
@@ -78,7 +111,7 @@
     }
 
     .status-badge.pending {
-        background-color: #ffc107;
+        background-color: #fcbd00;
         color: #212529;
     }
 
@@ -97,54 +130,18 @@
         color: #fff;
     }
 
-    /* Adjusting the "No orders found" message */
-    .text-muted {
-        font-size: 1.1rem;
-    }
-
-    /* Custom hover animation for "View Details" button */
-    .card .btn-light:hover {
-        background-color: #f8f9fa;
-        color: #007bff;
-        box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
-    }
-
-    /* Responsiveness for Card Layout */
-    .card {
-        border: none;
-        margin: 0 15px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    /* Enhance Button Appearance */
-    .btn-light {
-        background-color: #fff;
-        border: 2px solid #007bff;
-        color: #007bff;
+    /* Styling the Button */
+    .btn-sm {
+        font-size: 0.9rem;
         padding: 5px 10px;
-        font-weight: bold;
-        border-radius: 25px;
     }
 
-    .btn-light:hover {
-        background-color: #007bff;
-        color: white;
-        box-shadow: 0 4px 6px rgba(0, 123, 255, 0.3);
-    }
-
-    /* Small screen optimizations */
+    /* Responsive Grid */
     @media (max-width: 768px) {
-        .card-header {
+        .row {
+            display: flex;
             flex-direction: column;
-            text-align: center;
-        }
-
-        .card-body p {
-            font-size: 0.95rem;
-        }
-
-        .card-footer {
-            text-align: center;
+            align-items: center;
         }
     }
 </style>
