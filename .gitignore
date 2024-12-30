@@ -4,3 +4,11 @@
 ## Add more file extensions as needed
 ## Large files
 #media/video/*
+
+*.pyc
+*.pyo
+__pycache__/
+env/
+*.db
+.env
+logs/

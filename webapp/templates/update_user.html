@@ -5,61 +5,49 @@
 {% include 'mainheader.html' %}
 
 <header class="py-1" style="background-color:#e0a165;">
-    <div class="container px-4  ">
+    <div class="container px-4">
         <div class="text-center text-white">
-            <h1 style="color:white;font-family: Georgia, 'Times New Roman', Times, serif;font-size: 30px;" ;
+            <h1 style="color:white;font-family: Georgia, 'Times New Roman', Times, serif;font-size: 30px;"
                 class="display-4 fw-bolder">Update Information</h1>
         </div>
     </div>
 </header>
-<div class="container" style="
-        background-color: rgba(255, 255, 255, 0.9);
-        border: 1px solid #ddd;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-        background-image: url('https://img.freepik.com/free-photo/gold-jewellery-table-with-other-gold-jewellery_1340-42836.jpg');
-        background-size: cover;
-        background-position: center;
-        padding: 50px;
-        width:100%;
-        border-radius: 10px;
-        position: relative;
-        overflow: hidden;">
-    <div class="row justify-content-center">
 
-        <div class="card shadow-lg p-4 mb-5 rounded"
-        class="p-4 rounded position-relative">
-            <div class="card shadow-lg p-4 mb-5 rounded">
-                <div class="card-body">
-                    <h2 class="text-center mb-4" style="color:#e0a165;">Update Profile</h2>
+<div class="container d-flex justify-content-center align-items-center"
+     style="background-color: rgba(255, 255, 255, 0.9); border: 1px solid #ddd;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            background-image: url('https://img.freepik.com/free-photo/gold-jewellery-table-with-other-gold-jewellery_1340-42836.jpg');
+            background-size: cover; background-position: center; padding: 50px; margin-top: 20px;
+            border-radius: 10px; position: relative; overflow: hidden;">
 
-                    <!-- Form -->
-                    <form method="POST" action="{% url 'update_user' %}" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <div class="form-group">
-                            {{ user_form.as_p }}
-                        </div>
+    <div class="card shadow-lg p-4 mb-5 rounded" style="width: 600px;">
+        <div class="card-body">
+            <h2 class="text-center mb-4" style="color:#e0a165;">Update Profile</h2>
 
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-secondary btn-lg w-100 mb-3"
-                                style="background-color:#A7792B; border:1px solid white;font-size: 13px;">
-                                Update Profile
-                            </button>
-                        </div>
-                    </form>
-
-                    <!-- Update Password Button -->
-                    <div class="text-center">
-                            <a href="{% url 'update_password' %}" class="btn btn-lg w-100"
-                                style="color:#A7792B;font-size: 13px;border:1px solid #A7792B;">
-                                Update Password
-                            </a>
-                        </div>
+            <!-- Form -->
+            <form method="POST" action="{% url 'update_user' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group mb-3">
+                    {{ user_form.as_p }}
                 </div>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-secondary btn-lg w-100 mb-3"
+                            style="background-color:#e0a165; border:1px solid white; font-size: 13px;">
+                        Update Profile
+                    </button>
+                </div>
+            </form>
+
+            <!-- Update Password Button -->
+            <div class="text-center">
+                <a href="{% url 'update_password' %}" class="btn btn-lg w-100"
+                   style="color:#A7792B; font-size: 13px; border:1px solid #A7792B;">
+                    Update Password
+                </a>
             </div>
         </div>
-
     </div>
 </div>
-
 
 {% endblock %}

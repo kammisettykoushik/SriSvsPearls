@@ -38,7 +38,7 @@ class AdminAccessMiddleware:
 
     def send_alert(self, ip, path, current_time):
         subject = 'Unauthorized Admin Access Attempt at SriSvsPearls'
-        from_email = 'omprakashmadasi@gmail.com'
+        from_email = 'trishokadigiservices@gmail.com'
         to_email = 'trishokadigiservices@gmail.com'
 
         context = {

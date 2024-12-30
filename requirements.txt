@@ -3,6 +3,6 @@ asgiref
 daphne
 Pillow
 reportlab
-plotly
-pandas
 django-import-export
+python-decouple
+psycopg2
