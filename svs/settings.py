@@ -27,7 +27,7 @@ SECRET_KEY = config('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*','srisvspearls.com', 'www.srisvspearls.com']
+ALLOWED_HOSTS = ['62.72.12.232','srisvspearls.com', 'www.srisvspearls.com']
 
 
 # settings.py
