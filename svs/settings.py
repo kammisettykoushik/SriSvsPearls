@@ -42,6 +42,10 @@ CSRF_TRUSTED_ORIGINS = [
 CSRF_COOKIE_SECURE = True  # If using HTTPS
 SESSION_COOKIE_SECURE = True  # If using HTTPS
 
+
+CSRF_COOKIE_DOMAIN = None  # Allow for both IP and domain access
+
+
 # Application definition
 
 INSTALLED_APPS = [
