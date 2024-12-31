@@ -123,9 +123,13 @@ class VisitorCount(models.Model):
 
 # email verification models start here :-
 
+# Function to generate the OTP code
+def generate_otp():
+    return secrets.token_hex(3)
+
 class OtpToken(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    otp_code = models.CharField(max_length=6, default=secrets.token_hex(3))
+    otp_code = models.CharField(max_length=6, default=generate_otp)
     otp_created_at = models.DateTimeField(auto_now_add=True)
     otp_expires_at = models.DateTimeField(blank=True, null=True)
 
