@@ -12,3 +12,24 @@ env/
 *.db
 .env
 logs/*.log
+
+
+# Python
+*.pyc
+__pycache__/
+
+# Virtual environment
+venv/
+env/
+
+# Django
+db.sqlite3
+media/
+staticfiles/
+
+# Environment variables
+.env
+
+# Migrations
+*/migrations/*
+!*/migrations/__init__.py
