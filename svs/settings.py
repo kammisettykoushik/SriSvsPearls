@@ -27,13 +27,13 @@ SECRET_KEY = config('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['http://62.72.12.232','srisvspearls.com', 'www.srisvspearls.com']
+ALLOWED_HOSTS = ['62.72.12.232','srisvspearls.com', 'www.srisvspearls.com']
 
 
 # settings.py
 
 CSRF_TRUSTED_ORIGINS = [
-    '62.72.12.232',
+    'http://62.72.12.232',
     'https://srisvspearls.com',
     'https://www.srisvspearls.com',  # In case you're using HTTP (for local testing or development)
 ]
