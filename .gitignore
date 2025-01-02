@@ -19,11 +19,14 @@ logs/*.log
 __pycache__/
 
 # Virtual environment
-venv/
+
 env/
 
 # Django
 db.sqlite3
+#media/
+/media/*
+!/media/video/
 
 staticfiles/
 
