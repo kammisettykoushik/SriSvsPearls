@@ -9,11 +9,9 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-from email.policy import default
+
 from pathlib import Path
 import os
-from decouple import config
-
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,29 +21,24 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('DJANGO_SECRET_KEY')
+SECRET_KEY = 'django-insecure-g#x$7o1e^l=3o44_61x=dy=q-n*o9%35^*@^43g4snl(1+cpvx'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['62.72.12.232','srisvspearls.com', 'www.srisvspearls.com']
+ALLOWED_HOSTS = ['*', 'https://srisvspearls.onrender.com/', 'www.srisvspearls.onrender.com',]
 
 
 # settings.py
 
 CSRF_TRUSTED_ORIGINS = [
-    'http://62.72.12.232',
-    'https://srisvspearls.com',
-    'https://www.srisvspearls.com',  # In case you're using HTTP (for local testing or development)
+    'https://srisvspearls.onrender.com',
+    'http://srisvspearls.onrender.com',  # In case you're using HTTP (for local testing or development)
 ]
 # settings.py
 
 CSRF_COOKIE_SECURE = True  # If using HTTPS
 SESSION_COOKIE_SECURE = True  # If using HTTPS
-
-
-CSRF_COOKIE_DOMAIN = None  # Allow for both IP and domain access
-
 
 # Application definition
 
@@ -98,21 +91,12 @@ WSGI_APPLICATION = 'svs.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DB_NAME'),
-        'USER': config('DB_USER'),
-        'PASSWORD': config('DB_PASSWORD'),
-        'HOST': config('DB_HOST'),
-        'PORT': config('DB_PORT', default=5432, cast=int),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
-# The rest of your settings...
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -149,8 +133,6 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / "static", ]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
@@ -168,9 +150,9 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = config('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
-DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='trishokadigiservices@gmail.com')
+EMAIL_HOST_USER = 'omprakashmadasi@gmail.com'
+EMAIL_HOST_PASSWORD = 'yzgabmzfmcckrdzs'
+DEFAULT_FROM_EMAIL = 'omprakashmadasi@gmail.com'
 
 
 
@@ -179,27 +161,17 @@ DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='trishokadigiservices@
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    'formatters': {
-        'verbose': {
-            'format': '{levelname} {asctime} {module} {message}',
-            'style': '{',
-        },
-    },
     'handlers': {
-        'file': {
-            'level': 'ERROR',
-            'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'logs/error.log'),
-            'formatter': 'verbose',
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
         },
     },
     'loggers': {
-        'django': {
-            'handlers': ['file'],
-            'level': 'ERROR',
-            'propagate': True,
+        '': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
         },
     },
 }
-
 
