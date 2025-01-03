@@ -361,7 +361,7 @@ def resend_otp(request):
                         It expires in 5 minutes. Use the URL below to verify your email:
                         https://www.srisvspearls.com/verify_email/{user.username}
                     """
-            sender = "trishokadigiservices@gmail.com"
+            sender = "omprakashmadasi@gmail.com"
             receiver = [user.email, ]
 
             # Send email
@@ -404,7 +404,7 @@ def forgot_password(request):
                 # Send email with the link
                 subject = "Password Reset Request"
                 message = f"Hi {user.username},\n\nYou requested a password reset. Click the link below to reset your password:\n{reset_link}\n\nIf you did not request this, ignore this message."
-                send_mail(subject, message, 'trishokadigiservices@gmail.com', [user.email])
+                send_mail(subject, message, 'omprakashamadasi@gmail.com', [user.email])
 
                 messages.success(request, 'Password reset link sent to your email address.')
                 return redirect('login')

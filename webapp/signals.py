@@ -25,9 +25,9 @@ def create_token(sender, instance, created, **kwargs):
             message = f"""
                 Hi {instance.username}, here is your OTP {otp.otp_code}
                 It expires in 5 minutes. Use the link below to verify your email:
-                http://127.0.0.1:8000/verify-email/{instance.username}
+                https://www.srisvspearls/verify-email/{instance.username}
             """
-            sender_email = "trishokadigiservices@gmail.com"  # Replace with your email
+            sender_email = "omprakashmadasi@gmail.com"  # Replace with your email
             recipient_list = [instance.email]
 
             print(f"Sending OTP to: {instance.email}")  # Debugging: Ensure the email is going to the correct address
