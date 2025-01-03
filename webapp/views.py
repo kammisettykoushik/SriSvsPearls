@@ -359,7 +359,7 @@ def resend_otp(request):
             message = f"""
                         Hi {user.username}, here is your OTP {otp.otp_code}
                         It expires in 5 minutes. Use the URL below to verify your email:
-                        http://127.0.0.1:8000/verify_email/{user.username}
+                        https://www.srisvspearls.com/verify_email/{user.username}
                     """
             sender = "trishokadigiservices@gmail.com"
             receiver = [user.email, ]
