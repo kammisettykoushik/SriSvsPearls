@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from email.policy import default
 from pathlib import Path
 import os
-
 from decouple import config
 
 
@@ -27,7 +26,7 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 SECRET_KEY = config('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['62.72.12.232','srisvspearls.com', 'www.srisvspearls.com']
 
