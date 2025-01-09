@@ -3,6 +3,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.http import HttpResponseForbidden
 from django.template.loader import render_to_string
 from django.utils import timezone
+import ipaddress
 
 logger = logging.getLogger(__name__)
 
@@ -33,8 +34,12 @@ class AdminAccessMiddleware:
         return ip
 
     def is_allowed_ip(self, ip):
-        allowed_ips = ['192.168.0.109', '127.0.0.1', '124.123.188.229', '192.168.64.170',]  # Add your trusted IPs here
-        return ip in allowed_ips
+        # Allowed IP prefixes (range of IPs allowed)
+        allowed_prefixes = ['192.168.0', '127.0.0.1', '124.123.188', '192.168.64']  # Add your trusted IP prefixes here
+
+        # Check if the IP starts with any of the allowed prefixes
+        return any(ip.startswith(prefix) for prefix in allowed_prefixes)
+        # return ip in allowed_ips
 
     def send_alert(self, ip, path, current_time):
         subject = 'Unauthorized Admin Access Attempt at SriSvsPearls'
