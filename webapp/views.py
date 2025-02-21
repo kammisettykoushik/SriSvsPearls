@@ -20,6 +20,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 import smtplib
+from django.utils.html import strip_tags
 
 # Create your views here.
 
@@ -251,16 +252,10 @@ def login_user(request):
             user = User.objects.filter(username=username_or_email_or_mobile).first()
 
         if user:
-            # Check if the user's account is active (i.e., email is verified)
-            if not user.is_active:
-                messages.warning(request, "Please verify your email before logging in.")
-                return redirect('verify_email', username=user.username)  # Redirect to the email verification page
-            # Authenticate the user
-            user = authenticate(request, username=user.username, password=password)
             if user is not None:
                 login(request, user)
                 messages.success(request, 'Login successful!!!! Please Update the Profile...')
-                return redirect('update_user')
+                return redirect('index')
             else:
                 messages.error(request, 'Invalid login credentials. Please try again.')
                 return redirect('login')
@@ -296,7 +291,7 @@ def register_user(request):
 
 
             messages.success(request, 'Username Created - An OTP was sent to your Email...')
-            return redirect('verify_email', username=user.username)
+            return redirect('login')
 
         else:
             # If form is not valid, return to the register page with errors
@@ -308,61 +303,6 @@ def register_user(request):
         return render(request, 'register.html', {'form': form})
 
 
-
-def verify_email(request, username):
-    user = User.objects.get(username=username)
-    user_otp = OtpToken.objects.filter(user=user).last()
-
-    if request.method == 'POST':
-        if user_otp and user_otp.otp_code == request.POST['otp_code']:
-            if user_otp.otp_expires_at > timezone.now():
-                user.is_active = True
-                user.save()
-                messages.success(request, "Account activated successfully.")
-                return redirect("login")
-            else:
-                messages.warning(request, "Expired OTP. Please request a new one.")
-                return redirect("verify_email", username=user.username)
-        else:
-            messages.warning(request, "Invalid OTP. Please try again.")
-            return redirect("verify_email", username=user.username)
-    return render(request, "verify_token.html", {})
-
-def resend_otp(request):
-    if request.method == 'POST':
-        user_email = request.POST["otp_email"]
-
-        if User.objects.filter(email=user_email).exists():
-            user = User.objects.get(email=user_email)
-
-            otp = OtpToken.objects.filter(user=user).first()
-
-            if otp:
-                otp.delete()
-                otp = OtpToken.objects.create(user=user, otp_expires_at=timezone.now() + timezone.timedelta(minutes=5))
-            else:
-                otp = OtpToken.objects.create(user=user, otp_expires_at=timezone.now() + timezone.timedelta(minutes=5))
-
-            subject = "Email Verification"
-            message = f"Hi {user.username}, here is your OTP {otp.otp_code}. It expires in 5 minutes. Use the URL below to verify your email: https://www.srisvspearls.com/verify_email/{user.username}"
-            sender = "omprakashmadasi@gmail.com"
-            receiver = [user.email]
-
-            try:
-                send_mail(subject, message, sender, receiver, fail_silently=False)
-                messages.success(request, "A new OTP has been sent to your email address.")
-                return redirect("verify_email", username=user.username)
-            except smtplib.SMTPAuthenticationError as e:
-                messages.error(request, f'SMTP Authentication Error: {str(e)}')
-                return redirect("resend-otp")
-            except Exception as e:
-                messages.error(request, f'Error: {str(e)}')
-                return redirect("resend-otp")
-        else:
-            messages.warning(request, "This email doesn't exist in the database.")
-            return redirect("resend-otp")
-    else:
-        return render(request, "resend_otp.html", {})
 
 
 
@@ -385,10 +325,22 @@ def forgot_password(request):
                 # Generate password reset link
                 reset_link = f"http://{get_current_site(request).domain}/reset_password/{uid}/{token}/"
 
-                # Send email with the link
+                # Render the HTML email message
                 subject = "Password Reset Request"
-                message = f"Hi {user.username},\n\nYou requested a password reset. Click the link below to reset your password:\n{reset_link}\n\nIf you did not request this, ignore this message."
-                send_mail(subject, message, 'omprakashamadasi@gmail.com', [user.email])
+                html_message = render_to_string('password_reset_email.html', {
+                    'user': user,
+                    'reset_link': reset_link,
+                    'current_year': 2025  # You can dynamically fetch the year as well
+                })
+                plain_message = strip_tags(html_message)  # For plaintext fallback
+
+                send_mail(
+                    subject,
+                    plain_message,
+                    'trishokadigiservices@gmail.com',
+                    [user.email],
+                    html_message=html_message
+                )
 
                 messages.success(request, 'Password reset link sent to your email address.')
                 return redirect('login')

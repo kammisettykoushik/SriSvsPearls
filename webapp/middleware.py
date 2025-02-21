@@ -34,7 +34,7 @@ class AdminAccessMiddleware:
         return ip
 
     def is_allowed_ip(self, ip):
-        allowed_ips = ['192.168.0.109', '192.168.0.107', '127.0.0.1', '124.123.188.229', '192.168.64.170',]  # Add your trusted IPs here
+        allowed_ips = ['192.168.0.109', '192.168.0.107', '192.168.0.113', '127.0.0.1', '124.123.188.229', '192.168.64.170',]  # Add your trusted IPs here
         return ip in allowed_ips
 
     def send_alert(self, ip, path, current_time):

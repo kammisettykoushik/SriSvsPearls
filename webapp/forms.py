@@ -54,14 +54,10 @@ class UpdateUserForm(UserChangeForm):
     # get other fields
     profile_picture = forms.ImageField(label="Profile Picture", required=False)
     email = forms.EmailField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Email Address'}))
-    first_name = forms.CharField(max_length=100,
-                                 widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'First Name'}))
-    last_name = forms.CharField(max_length=100,
-                                widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Last Name'}))
 
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'profile_picture',)
+        fields = ('username', 'email', 'profile_picture',)
 
     def __init__(self, *args, **kwargs):
         super(UpdateUserForm, self).__init__(*args, **kwargs)
@@ -72,22 +68,21 @@ class UpdateUserForm(UserChangeForm):
         self.fields['profile_picture'].widget.attrs['accept'] = 'image/*'  # To limit file types to images
 
 
-
 class SignUpForm(UserCreationForm):
     email = forms.EmailField(
         label="",
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Email Address', 'autocomplete': 'email'})
     )
-    first_name = forms.CharField(
-        label="",
-        max_length=100,
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'First Name', 'autocomplete': 'given-name'})
-    )
-    last_name = forms.CharField(
-        label="",
-        max_length=100,
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Last Name', 'autocomplete': 'family-name'})
-    )
+    # first_name = forms.CharField(
+    #     label="",
+    #     max_length=100,
+    #     widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'First Name', 'autocomplete': 'given-name'})
+    # )
+    # last_name = forms.CharField(
+    #     label="",
+    #     max_length=100,
+    #     widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Last Name', 'autocomplete': 'family-name'})
+    # )
     # mobile_number = forms.CharField(
     #     label="",
     #     max_length=15,
@@ -96,7 +91,7 @@ class SignUpForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')
+        fields = ('username', 'email', 'password1', 'password2')
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
@@ -114,9 +109,28 @@ class SignUpForm(UserCreationForm):
     #         raise ValidationError("Mobile number should contain only 10 digits.")
     #     return mobile_number
 
+    def clean_password1(self):
+        password = self.cleaned_data.get('password1')
+        # if len(password) < 4:
+        #     raise ValidationError('Password must be at least 4 characters long.')
+        # # if not any(char.isdigit() for char in password):
+        #     raise ValidationError('Password must contain at least one number.')
+        # if not any(char.isalpha() for char in password):
+        #     raise ValidationError('Password must contain at least one letter.')
+        return password
+
     def clean_password2(self):
         password1 = self.cleaned_data.get('password1')
         password2 = self.cleaned_data.get('password2')
+
+        # Check if either password is None
+        if password1 is None or password2 is None:
+            raise ValidationError('Both password fields are required.')
+
+        # Check if passwords are at least 4 characters long
+        if len(password1) < 4 or len(password2) < 4:
+            raise ValidationError('Password must be at least 4 characters long.')
+
         if password1 != password2:
             raise ValidationError('Passwords do not match')
         return password2
@@ -132,7 +146,7 @@ class SignUpForm(UserCreationForm):
         self.fields['username'].label = ''
         self.fields['username'].help_text = (
             '<span class="form-text text-muted"><small>'
-            'Required. 20 characters or fewer. Letters, digits and @/./+/-/_ only.'
+    'Required. 20 characters or fewer. <span class="text-danger">(No spaces allowed, only letters, numbers, and @/./+/-/_)</span>'
             '</small></span>'
         )
 
@@ -144,10 +158,10 @@ class SignUpForm(UserCreationForm):
         self.fields['password1'].label = ''
         self.fields['password1'].help_text = (
             '<ul class="form-text text-muted small">'
-            '<li>Your password can\'t be too similar to your other personal information.</li>'
-            '<li>Your password must contain at least 8 characters.</li>'
+            # '<li>Your password can\'t be too similar to your other personal information.</li>'
+            '<li>Your password must contain at least 4 characters.</li>'
             '<li>Your password can\'t be a commonly used password.</li>'
-            '<li>Your password can\'t be entirely numeric.</li>'
+            # '<li>Your password can\'t be entirely numeric.</li>'
             '</ul>'
         )
 

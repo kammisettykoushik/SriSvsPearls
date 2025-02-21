@@ -15,8 +15,6 @@ urlpatterns = [
     path('search/', views.search, name='search'),
     path('testimonials/', views.testimonials, name='testimonials'),
 
-    path("verify_email/<str:username>/", views.verify_email, name="verify_email"),
-    path("resend-otp/", views.resend_otp, name="resend-otp"),
 
 path('forgot_password/', views.forgot_password, name='forgot_password'),
     path('reset_password/<uidb64>/<token>/', views.reset_password, name='reset_password'),
