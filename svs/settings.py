@@ -72,7 +72,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'webapp.middleware.AdminAccessMiddleware',
+    # 'webapp.middleware.AdminAccessMiddleware',
 ]
 
 ROOT_URLCONF = 'svs.urls'
